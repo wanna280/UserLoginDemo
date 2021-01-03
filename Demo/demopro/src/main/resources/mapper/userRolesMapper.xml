@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demopro.dao.UserRolesDao">
+    <resultMap id="UserRoles" type="com.example.demopro.entity.UserRolesBean">
+        <result column="id" property="id"></result>
+        <result column="username" property="username"></result>
+        <result column="roles" property="roles"></result>
+    </resultMap>
+
+    <select id="GetUserRolesById" resultMap="UserRoles">
+        select * from wann.userRoles where id = #{id};
+    </select>
+
+    <select id="GetUserRolesByUserName" resultMap="UserRoles">
+        select * from wann.userRoles where username = #{username};
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demopro.dao.UserDao">
+    <resultMap id="User" type="com.example.demopro.entity.UserBean">
+        <result column="id" property="id"></result>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+    </resultMap>
+
+    <select id="GetUserById" resultMap="User">
+        select * from wann.user where id = #{id};
+    </select>
+
+    <select id="UserLogin" resultMap="User">
+        select * from wann.user where username = #{username} and password = #{password};
+    </select>
+    <select id="GetUserByUserName" resultMap="User">
+        select * from wann.user where username = #{username}
+    </select>
+</mapper>
