@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.Filter;
 
@@ -32,8 +31,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {  //登录拦截
 
         http.authorizeRequests()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/login").permitAll()  //允许任意访问login页面
-                .antMatchers("/test").fullyAuthenticated()
+                .antMatchers("/test").hasAuthority("admin")  //必须要有admin权限才能访问
                 .antMatchers("/test").hasAuthority("admin")  //必须要有admin权限才能访问
                 .antMatchers("/home").hasAnyAuthority("admin", "user")  //登录之后可以访问home页面
                 .anyRequest().permitAll();

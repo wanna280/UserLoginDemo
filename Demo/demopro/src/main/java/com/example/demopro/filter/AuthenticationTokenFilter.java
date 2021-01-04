@@ -25,6 +25,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,14 +59,18 @@ public class AuthenticationTokenFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         Map<String, Object> map = new HashMap<>();   //保存当token校验失败时，返回的map
+        HttpServletResponseWrapper req = new HttpServletResponseWrapper((HttpServletResponse) servletResponse);
 
         //如果ServletRequest是HttpServletRequest实例
         if (servletRequest instanceof HttpServletRequest) {
             HttpServletResponse response = ((HttpServletResponse) servletResponse);  //保存response
             HttpServletRequest request = (HttpServletRequest) servletRequest;  //保存request
 
+            //System.out.println(request.getRequestURI());
             //如果是登录请求，一律让过
-            if(request.getRequestURI().equals("/login")){
+            //  /login是本地DevServer的路径，/api/login是远端服务器的地址
+            if(request.getRequestURI().equals("/login") || request.getRequestURI().equals("/api/login")){
+                System.out.println("Filter-"+request.getRequestURI());
                 filterChain.doFilter(servletRequest,servletResponse);
                 return;
             }

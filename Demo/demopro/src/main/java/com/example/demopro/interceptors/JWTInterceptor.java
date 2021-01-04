@@ -19,6 +19,10 @@ public class JWTInterceptor implements HandlerInterceptor {   //实现拦截器�
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Map<String, Object> map = new HashMap<>();   //map
 
+        if(request.getRequestURI().equals("/login") ||request.getRequestURI().equals("/api/login")){
+            System.out.println("Incept-"+request.getRequestURI());
+            return true;  //放行
+        }
         String token = request.getHeader("token");  //获取请求头当中的token
         //System.out.println("token----"+token);
         try {

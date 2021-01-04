@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class InterceptorsConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //拦截所有请求，放行/**，不然无法登录，其他接口登录认证
+        //拦截所有请求，放行/login，不然无法登录，其他接口登录认证
         registry.addInterceptor(new JWTInterceptor())
                 .addPathPatterns("/**")   //拦截所有路径
                 .excludePathPatterns("/login")  //放行/login

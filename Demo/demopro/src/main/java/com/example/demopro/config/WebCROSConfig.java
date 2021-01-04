@@ -9,6 +9,7 @@ public class WebCROSConfig extends WebMvcConfigurerAdapter {  //配置跨域请�
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
+                .allowedOrigins("http://localhost","null")
                 .allowedOrigins("http://localhost:8080","null")
                 .allowedMethods("GET","POST","PUT","OPTIONS","DELETE")
                 .allowCredentials(true)

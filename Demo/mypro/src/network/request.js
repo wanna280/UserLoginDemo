@@ -3,7 +3,7 @@ import Axios from "axios";
 //网络请求，封装后端的API接口
 export default function(config) {
     const instance = Axios.create({
-            baseURL: '/api',
+            baseURL: '/',
             timeout: 5000,
             headers: {
 
