@@ -178,7 +178,7 @@ export default {
                     "注册失败，原因是：" +
                     res.data.reason
                 );
-                this.$router.go(0);
+                this.Captcha()
               }
             })
             .catch((err) => {

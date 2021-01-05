@@ -101,7 +101,7 @@ export default {
             } else {
               alert("账号或密码错误！");
             }
-            this.$router.go(0);
+            this.Captcha()
           }
         })
         .catch((err) => {

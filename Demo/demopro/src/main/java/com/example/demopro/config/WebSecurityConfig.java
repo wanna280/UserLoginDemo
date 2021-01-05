@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -29,9 +28,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {  //登录拦截
 
         http.authorizeRequests()
-                .antMatchers("/captcha").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/register").permitAll()  //允许任意访问login页面
+                .antMatchers("/captcha").permitAll() //允许访问验证码页面
+                .antMatchers("/login").permitAll()  //允许访问login页面
+                .antMatchers("/register").permitAll()  //允许任意访问register页面
                 .antMatchers("/test").hasAnyAuthority("user","admin")  //必须要有admin权限才能访问
                 .antMatchers("/home").hasAnyAuthority("admin")  //登录之后可以访问home页面
                 .anyRequest().authenticated();

@@ -56,7 +56,7 @@ public class AuthenticationTokenFilter implements Filter {
             HttpServletRequest request = (HttpServletRequest) servletRequest;  //保存request
 
             //拦截/login和/register的请求，判断验证码,验证码正确则放行，否则，拦截
-            if (request.getRequestURI().equals("/login")||request.getRequestURI().equals("/register")) {
+            if (request.getRequestURI().equals("/login") || request.getRequestURI().equals("/register")) {
                 System.out.println("Filter拦截的URI为" + request.getRequestURI());
                 String captcha = request.getParameter("captcha");
                 Jedis jedis = new Jedis("47.107.157.20", 6379);
@@ -65,10 +65,10 @@ public class AuthenticationTokenFilter implements Filter {
                 String captcha_s = jedis.get("capt_key_" + key_uuid);
 
                 //如果验证码一致，则放行，验证码不区分大小写，因此这里统一转换为小写来判断
-                if(captcha.toLowerCase().equals(captcha_s.toLowerCase())){
-                    filterChain.doFilter(servletRequest,servletResponse);
+                if (captcha.toLowerCase().equals(captcha_s.toLowerCase())) {
+                    filterChain.doFilter(servletRequest, servletResponse);
                     return;
-                }else{
+                } else {
                     map.put("msg", "请求失败");
                     map.put("status", false);
                     map.put("reason", "验证码不正确");
@@ -111,7 +111,7 @@ public class AuthenticationTokenFilter implements Filter {
                     map.put("reason", "token校验不正确");
                     String json_str = JSON.toJSONString(map);  //将map转换未JSON字符串
                     response.setContentType("application/json;charset=UTF-8");
-                    response.getWriter().print(json_str);
+                    response.getWriter().print(json_str);  //写进响应体
                     return;
                 }
 
@@ -121,9 +121,9 @@ public class AuthenticationTokenFilter implements Filter {
                 map.put("reason", "未携带token");
 
                 String json_str = JSON.toJSONString(map);  //将map转换为JSON字符串
-                
+
                 response.setContentType("application/json;charset=UTF-8");
-                response.getWriter().print(json_str);
+                response.getWriter().print(json_str);  //写进响应体
                 return;
             }
         }

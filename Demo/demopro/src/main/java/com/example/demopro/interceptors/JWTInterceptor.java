@@ -18,11 +18,11 @@ public class JWTInterceptor implements HandlerInterceptor {   //实现拦截器�
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Map<String, Object> map = new HashMap<>();   //map
 
-        if(request.getRequestURI().equals("/login") ||request.getRequestURI().equals("/api/login")){
+        if(request.getRequestURI().equals("/login")){
             System.out.println("Incept-"+request.getRequestURI());
             return true;  //放行
         }
-        if(request.getRequestURI().equals("/register") ||request.getRequestURI().equals("/api/register")){
+        if(request.getRequestURI().equals("/register")){
             System.out.println("Incept-"+request.getRequestURI());
             return true;  //放行
         }
