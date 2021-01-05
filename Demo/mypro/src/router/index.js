@@ -57,8 +57,8 @@ router.beforeEach((to, from, next) => {
                 },
             })
             .then((res) => {
-                console.log(res)
-                    //如果后端返回的接口状态是true，则next
+                //console.log(res)
+                //如果后端返回的接口状态是true，则next
                 if (res.data.status == true) {
                     next()
                 } else { //如果没有返回true，则回到登录页面

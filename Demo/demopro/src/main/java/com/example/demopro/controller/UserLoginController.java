@@ -61,12 +61,11 @@ public class UserLoginController {
     @RequestMapping("/register")
     public Map<String, Object> Register(String username, String password) {
         String passwd = new BCryptPasswordEncoder().encode(password);  //将密码加密
-        int id = 8;  //id，怎么生成？？？？
         String roles = "user";  //注册用户默认权限都是user
         Map<String, Object> map = new HashMap<>();
-        UserBean userBean = new UserBean(id, username, passwd);  //创建用户的实体
-        UserRolesBean userRolesBean = new UserRolesBean(id, username, roles);  //创建角色的实体
-        UserBean user_db = userService.GetUserByUserName(username);
+        UserBean userBean = new UserBean(0, username, passwd);  //创建用户的实体，后端数据库自增id，所以id不用管
+        UserRolesBean userRolesBean = new UserRolesBean(0, username, roles);  //创建角色的实体，后端数据库自增id，所以id不用管
+        UserBean user_db = userService.GetUserByUserName(username);  //从后端数据库查询这个用户名的数据
         if (user_db == null) {  //如果不是空，数据库已经存在这个用户了
             boolean status1 = userService.InsertOneUser(userBean);  //插入用户表
             boolean status2 = userRolesService.InsertOneUserRole(userRolesBean); //插入角色表

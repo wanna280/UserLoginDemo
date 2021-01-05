@@ -40,8 +40,8 @@ export default {
     return {
       token: "", //Token
       LoginForm: {
-        username: "wanna",
-        password: "123456",
+        username: "",
+        password: "",
       },
     };
   },

@@ -22,6 +22,6 @@
     </select>
 
     <insert id="InsertOneUser">
-        insert into wann.user(id,username,password) values(#{id},#{username},#{password})
+        insert into wann.user(username,password) values(#{username},#{password})
     </insert>
 </mapper>

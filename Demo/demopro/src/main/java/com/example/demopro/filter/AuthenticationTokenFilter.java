@@ -9,6 +9,7 @@ import com.example.demopro.service.UserRolesService;
 import com.example.demopro.service.UserService;
 import com.example.demopro.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -66,32 +67,23 @@ public class AuthenticationTokenFilter implements Filter {
             HttpServletResponse response = ((HttpServletResponse) servletResponse);  //保存response
             HttpServletRequest request = (HttpServletRequest) servletRequest;  //保存request
 
-            //System.out.println(request.getRequestURI());
-            //如果是登录请求，一律让过
-            //  /login是本地DevServer的路径，/api/login是远端服务器的地址
-            if(request.getRequestURI().equals("/login") || request.getRequestURI().equals("/api/login")){
-                System.out.println("Filter-"+request.getRequestURI());
-                filterChain.doFilter(servletRequest,servletResponse);
-                return;
-            }
-            //如果是注册，一律放行
-            if(request.getRequestURI().equals("/register")||request.getRequestURI().equals("/api/register")){
-                System.out.println("Filter-"+request.getRequestURI());
-                filterChain.doFilter(servletRequest,servletResponse);
+            //如果是登录或者是注册请求，一律让过
+            //  /login是登录请求路径，/register是注册请求路径
+            if (request.getRequestURI().equals("/login") || request.getRequestURI().equals("/register")) {
+                System.out.println("Filter拦截的URI为" + request.getRequestURI());
+                filterChain.doFilter(servletRequest, servletResponse);
                 return;
             }
 
             //获取Http请求中的Header中的token部分的内容
             String token = ((HttpServletRequest) servletRequest).getHeader("token");
             //System.out.println(token);  //打印获取到的token
-            if (token != null && !"".equals(token)) { //如果token不为空
+
+            if (token != null && !(token.equals(""))) { //如果token不为空
 
                 try {   //如果认证成功，放行，如果认证失败，直接过滤掉？
-                    //System.out.println(token);
                     Claims claims = JwtUtil.VerifyJwt(token);
-                    //System.out.println(token);
                     String username = (String) claims.get("username");
-                    //System.out.println(token);
                     //System.out.println("用户" + username + "认证成功");
 
                     //如果得到了token，对token进行解析，并从已经认证的用户列表中根据username进行查询

@@ -18,6 +18,6 @@
     </select>
 
     <insert id="InsertOneUserRole">
-        insert into wann.userRoles(id,username,roles) values(#{id},#{username},#{roles})
+        insert into wann.userRoles(username,roles) values(#{username},#{roles})
     </insert>
 </mapper>
