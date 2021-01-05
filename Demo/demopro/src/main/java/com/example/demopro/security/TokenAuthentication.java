@@ -1,6 +1,6 @@
 package com.example.demopro.security;
 
-import com.example.demopro.utils.JwtUtil;
+import com.example.demopro.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,7 +47,7 @@ public class TokenAuthentication implements Authentication {
     public boolean isAuthenticated() {  //是否认证？
         System.out.println(this.token);
         try {
-            Claims claims = JwtUtil.VerifyJwt(this.token);
+            Claims claims = JwtUtils.VerifyJwt(this.token);
             String claims_username = (String) claims.get("username");  //尝试从claims获取username字段，获取失败则认证失败
             System.out.println("认证的用户名为"+claims_username);
             return true;

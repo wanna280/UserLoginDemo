@@ -1,14 +1,11 @@
 package com.example.demopro;
 
-import io.jsonwebtoken.Claims;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
-import static com.example.demopro.utils.JwtUtil.GenerateToken;
-import static com.example.demopro.utils.JwtUtil.VerifyJwt;
+import static com.example.demopro.utils.JwtUtils.GenerateToken;
 
 
 @ServletComponentScan("com.example.demopro.filter")

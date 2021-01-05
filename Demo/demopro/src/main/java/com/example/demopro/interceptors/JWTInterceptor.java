@@ -1,12 +1,11 @@
 package com.example.demopro.interceptors;
 
 import com.alibaba.fastjson.JSON;
-import com.example.demopro.utils.JwtUtil;
+import com.example.demopro.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -30,7 +29,7 @@ public class JWTInterceptor implements HandlerInterceptor {   //实现拦截器�
         String token = request.getHeader("token");  //获取请求头当中的token
         //System.out.println("token----"+token);
         try {
-            Claims claims = JwtUtil.VerifyJwt(token);  //校验token
+            Claims claims = JwtUtils.VerifyJwt(token);  //校验token
             claims.get("username");  //尝试去获取sub，获取失败则失败
             return true;  //校验成功，直接放行（return true）
         } catch (Exception ex) {

@@ -49,17 +49,29 @@ export default {
     return {
       captcha_src: "/api/captcha",
       token: "", //Token
-      LoginForm: {  //Form
+      LoginForm: {
+        //Form
         username: "",
         password: "",
         captcha: "",
+        uuid:"",
       },
     };
   },
   methods: {
     Captcha() {
       //点击一下，刷新验证码
-      this.captcha_src = "/api/captcha?date=" + new Date();
+      request({
+        url: "/api/captcha",
+      })
+        .then((res) => {
+          //console.log(res);
+          this.captcha_src = res.data.captcha_base64;
+          this.LoginForm.uuid = res.data.uuid;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     Submit() {
       request({
@@ -70,6 +82,7 @@ export default {
           username: this.LoginForm.username,
           password: this.LoginForm.password,
           captcha: this.LoginForm.captcha,
+          uuid:this.LoginForm.uuid
         },
       })
         .then((res) => {
@@ -83,12 +96,12 @@ export default {
             this.$router.push("/main"); //跳转到main页面
           } else {
             //根据后端返回的信息给出警示
-            if(res.data.reason === "验证码不正确"){
-              alert("验证码不正确")
-            }else{
+            if (res.data.reason === "验证码不正确") {
+              alert("验证码不正确");
+            } else {
               alert("账号或密码错误！");
             }
-            
+            this.$router.go(0);
           }
         })
         .catch((err) => {
@@ -99,7 +112,19 @@ export default {
       this.$router.push("/register");
     },
   },
-
+  created() {
+    request({
+      url: "/api/captcha",
+    })
+      .then((res) => {
+        //console.log(res);
+        this.captcha_src = res.data.captcha_base64;
+        this.LoginForm.uuid = res.data.uuid;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
 };
 </script>
 

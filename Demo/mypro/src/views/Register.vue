@@ -125,6 +125,7 @@ export default {
         checkPass: "",
         username: "",
         captcha: "",
+        uuid: "",
       },
       rules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
@@ -136,7 +137,17 @@ export default {
   methods: {
     Captcha() {
       //点击一下，刷新验证码
-      this.captcha_src = "/api/captcha?date=" + new Date();
+      request({
+        url: "/api/captcha",
+      })
+        .then((res) => {
+          //console.log(res);
+          this.captcha_src = res.data.captcha_base64;
+          this.RegForm.uuid = res.data.uuid;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     GoBack() {
       this.$router.go(-1); //回退到上一个页面
@@ -150,12 +161,13 @@ export default {
               username: this.RegForm.username,
               password: this.RegForm.checkPass,
               captcha: this.RegForm.captcha,
+              uuid: this.RegForm.uuid,
             },
           })
             .then((res) => {
               console.log(res);
               var status = res.data.status; //获取后端返回的状态
-              console.log(status)
+              //console.log(status);
               if (status == true) {
                 alert("用户" + this.RegForm.username + "注册成功");
                 this.$router.push("/login");
@@ -166,6 +178,7 @@ export default {
                     "注册失败，原因是：" +
                     res.data.reason
                 );
+                this.$router.go(0);
               }
             })
             .catch((err) => {
@@ -180,6 +193,19 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+  },
+  created() {
+    request({
+      url: "/api/captcha",
+    })
+      .then((res) => {
+        //console.log(res);
+        this.captcha_src = res.data.captcha_base64;
+        this.RegForm.uuid = res.data.uuid;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>

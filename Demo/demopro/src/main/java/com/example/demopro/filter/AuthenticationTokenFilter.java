@@ -1,26 +1,17 @@
 package com.example.demopro.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.example.demopro.entity.UserBean;
-import com.example.demopro.entity.UserRolesBean;
-import com.example.demopro.security.TokenAuthentication;
 import com.example.demopro.service.Impl.UserDetailsServiceImpl;
 import com.example.demopro.service.UserRolesService;
 import com.example.demopro.service.UserService;
-import com.example.demopro.utils.JwtUtil;
+import com.example.demopro.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.*;
@@ -69,7 +60,8 @@ public class AuthenticationTokenFilter implements Filter {
                 String captcha = request.getParameter("captcha");
                 Jedis jedis = new Jedis("47.107.157.20", 6379);
                 jedis.auth("123456");
-                String captcha_s = jedis.get("capt_key_" + request.getRemoteHost() + "");
+                String key_uuid = request.getParameter("uuid");
+                String captcha_s = jedis.get("capt_key_" + key_uuid);
 
                 //如果验证码一致，则放行，验证码不区分大小写，因此这里统一转换为小写来判断
                 if(captcha.toLowerCase().equals(captcha_s.toLowerCase())){
@@ -99,7 +91,7 @@ public class AuthenticationTokenFilter implements Filter {
             if (token != null && !(token.equals(""))) { //如果token不为空
 
                 try {   //如果认证成功，放行，如果认证失败，直接过滤掉？
-                    Claims claims = JwtUtil.VerifyJwt(token);
+                    Claims claims = JwtUtils.VerifyJwt(token);
                     String username = (String) claims.get("username");
                     //System.out.println("用户" + username + "认证成功");
 

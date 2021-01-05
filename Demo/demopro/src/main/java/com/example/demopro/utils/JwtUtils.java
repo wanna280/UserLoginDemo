@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JwtUtil {
+public class JwtUtils {
     public static final long TOKEN_EXPIRE_TIME = 30 * 24 * 60 * 60;  //设置过期时间为30days
     public static final String jwtId = "tokenId";   //tokenId
     private static final String JWT_SECRET = "1234567890";  //JWT的密钥（盐）

@@ -1,12 +1,11 @@
 package com.example.demopro.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.example.demopro.entity.UserBean;
 import com.example.demopro.entity.UserRolesBean;
 import com.example.demopro.service.UserRolesService;
 import com.example.demopro.service.UserService;
 import com.example.demopro.utils.CaptchaUtils;
-import com.example.demopro.utils.JwtUtil;
+import com.example.demopro.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,12 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import redis.clients.jedis.Jedis;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 public class UserLoginController {
@@ -44,7 +42,7 @@ public class UserLoginController {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", username);  //用户名
         claims.put("admin", true);  //是admin权限
-        String token = JwtUtil.GenerateToken(claims);  //使用工具生成jwt字符串
+        String token = JwtUtils.GenerateToken(claims);  //使用工具生成jwt字符串
 
         Map<String, Object> map = new HashMap<>();
         map.put("status", true);  //往响应中加入状态true，表示请求成功
@@ -107,8 +105,11 @@ public class UserLoginController {
         return map;
     }
 
+    @ResponseBody
     @RequestMapping("/captcha")  //返回一个html页面，并且是图片格式的
-    public String Captcha(HttpServletRequest request, HttpServletResponse response) {
+    public Map<String,Object> Captcha(HttpServletRequest request, HttpServletResponse response) {
+
+        Map<String,Object> map = new HashMap<>();
 
         Jedis jedis = new Jedis("47.107.157.20", 6379);
         jedis.auth("123456");
@@ -117,22 +118,26 @@ public class UserLoginController {
         try {
 
             //设置请求头信息，保存图片并输出到页面
-            response.setHeader("Cache-Control", "no-store");
-            response.setHeader("Pragma", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.setContentType("image/jpeg");
+//            response.setHeader("Cache-Control", "no-store");
+//            response.setHeader("Pragma", "no-cache");
+//            response.setDateHeader("Expires", 0);
+//            response.setContentType("image/jpeg");
 
-            vc.saveImage(vc.getImage(), response.getOutputStream());
+            UUID uuid = UUID.randomUUID();
+            //System.out.println(uuid.toString());
+            String code_base64 = vc.BufferedImageToBase64(vc.getImage());
+
+            map.put("uuid",uuid.toString());
+            map.put("captcha_base64",code_base64);
+            //vc.saveImage(vc.getImage(), response.getOutputStream());
             captchaString = vc.getText();
-            String host = request.getRemoteHost();
-            //根据IP地址生成Key，验证码为Value，写入Redis数据库当中去
-            jedis.set("capt_key_" + host, captchaString);
+            jedis.set("capt_key_" + uuid.toString(), captchaString);
             //System.out.println(host);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return null;
+        return map;
     }
 
 }
