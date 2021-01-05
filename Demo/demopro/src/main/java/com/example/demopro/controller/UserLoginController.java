@@ -114,27 +114,17 @@ public class UserLoginController {
         Jedis jedis = new Jedis("47.107.157.20", 6379);
         jedis.auth("123456");
         CaptchaUtils vc = new CaptchaUtils();
-        String captchaString = "";
+        String captchaString = "";  //验证码的字符
         try {
-
-            //设置请求头信息，保存图片并输出到页面
-//            response.setHeader("Cache-Control", "no-store");
-//            response.setHeader("Pragma", "no-cache");
-//            response.setDateHeader("Expires", 0);
-//            response.setContentType("image/jpeg");
-
             UUID uuid = UUID.randomUUID();
-            //System.out.println(uuid.toString());
             String code_base64 = vc.BufferedImageToBase64(vc.getImage());
 
             map.put("uuid",uuid.toString());
             map.put("captcha_base64",code_base64);
-            //vc.saveImage(vc.getImage(), response.getOutputStream());
             captchaString = vc.getText();
             jedis.set("capt_key_" + uuid.toString(), captchaString);
-            //System.out.println(host);
+            jedis.expire("capt_key_" + uuid.toString(),60);  //验证码60秒过期
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return map;

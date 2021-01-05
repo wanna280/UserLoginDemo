@@ -119,7 +119,7 @@ export default {
       }
     };
     return {
-      captcha_src: "/api/captcha",
+      captcha_src: "",
       RegForm: {
         pass: "",
         checkPass: "",

@@ -54,6 +54,7 @@ public class AuthenticationTokenFilter implements Filter {
         if (servletRequest instanceof HttpServletRequest) {
             HttpServletResponse response = ((HttpServletResponse) servletResponse);  //保存response
             HttpServletRequest request = (HttpServletRequest) servletRequest;  //保存request
+
             //拦截/login和/register的请求，判断验证码,验证码正确则放行，否则，拦截
             if (request.getRequestURI().equals("/login")||request.getRequestURI().equals("/register")) {
                 System.out.println("Filter拦截的URI为" + request.getRequestURI());
@@ -120,8 +121,7 @@ public class AuthenticationTokenFilter implements Filter {
                 map.put("reason", "未携带token");
 
                 String json_str = JSON.toJSONString(map);  //将map转换为JSON字符串
-
-                //System.out.println("未携带token，认证失败");
+                
                 response.setContentType("application/json;charset=UTF-8");
                 response.getWriter().print(json_str);
                 return;

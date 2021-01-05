@@ -47,7 +47,7 @@ import request from "../network/request";
 export default {
   data() {
     return {
-      captcha_src: "/api/captcha",
+      captcha_src: "",
       token: "", //Token
       LoginForm: {
         //Form
