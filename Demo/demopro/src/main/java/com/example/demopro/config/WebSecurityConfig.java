@@ -16,8 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.servlet.Filter;
-
 @Configuration
 @EnableWebSecurity  //使用EnableWebSecurity注解，引入SpringSecurity的安全支持
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -31,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {  //登录拦截
 
         http.authorizeRequests()
+                .antMatchers("/captcha").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()  //允许任意访问login页面
                 .antMatchers("/test").hasAnyAuthority("user","admin")  //必须要有admin权限才能访问

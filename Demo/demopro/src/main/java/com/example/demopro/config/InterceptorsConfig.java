@@ -15,7 +15,9 @@ public class InterceptorsConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/login")  //放行/login
                 .excludePathPatterns("/success") //放行/success
                 .excludePathPatterns("/failed") //放行/failed
-                .excludePathPatterns("/register");  //放行register
+                .excludePathPatterns("/register")  //放行register
+                .excludePathPatterns("/captcha");  //放行验证码
+
     }
 }
 

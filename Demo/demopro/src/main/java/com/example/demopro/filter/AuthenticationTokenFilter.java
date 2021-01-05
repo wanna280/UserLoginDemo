@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -28,10 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 实现过滤器接口，用于认证Token
@@ -62,22 +60,41 @@ public class AuthenticationTokenFilter implements Filter {
         Map<String, Object> map = new HashMap<>();   //保存当token校验失败时，返回的map
         HttpServletResponseWrapper req = new HttpServletResponseWrapper((HttpServletResponse) servletResponse);
 
-        //如果ServletRequest是HttpServletRequest实例
         if (servletRequest instanceof HttpServletRequest) {
             HttpServletResponse response = ((HttpServletResponse) servletResponse);  //保存response
             HttpServletRequest request = (HttpServletRequest) servletRequest;  //保存request
-
-            //如果是登录或者是注册请求，一律让过
-            //  /login是登录请求路径，/register是注册请求路径
-            if (request.getRequestURI().equals("/login") || request.getRequestURI().equals("/register")) {
+            //拦截/login和/register的请求，判断验证码,验证码正确则放行，否则，拦截
+            if (request.getRequestURI().equals("/login")||request.getRequestURI().equals("/register")) {
                 System.out.println("Filter拦截的URI为" + request.getRequestURI());
+                String captcha = request.getParameter("captcha");
+                Jedis jedis = new Jedis("47.107.157.20", 6379);
+                jedis.auth("123456");
+                String captcha_s = jedis.get("capt_key_" + request.getRemoteHost() + "");
+
+                //如果验证码一致，则放行，验证码不区分大小写，因此这里统一转换为小写来判断
+                if(captcha.toLowerCase().equals(captcha_s.toLowerCase())){
+                    filterChain.doFilter(servletRequest,servletResponse);
+                    return;
+                }else{
+                    map.put("msg", "请求失败");
+                    map.put("status", false);
+                    map.put("reason", "验证码不正确");
+                    String json_str = JSON.toJSONString(map);  //将map转换为JSON字符串
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().print(json_str);
+                    System.out.println("验证码不正确");
+                    return;
+                }
+            }
+            //如果是验证码请求，一律让过，/captcha是验证码
+            if (request.getRequestURI().equals("/captcha")) {
+//                System.out.println("Filter拦截的URI为" + request.getRequestURI());
                 filterChain.doFilter(servletRequest, servletResponse);
                 return;
             }
 
             //获取Http请求中的Header中的token部分的内容
             String token = ((HttpServletRequest) servletRequest).getHeader("token");
-            //System.out.println(token);  //打印获取到的token
 
             if (token != null && !(token.equals(""))) { //如果token不为空
 
@@ -100,11 +117,8 @@ public class AuthenticationTokenFilter implements Filter {
                     map.put("status", false);
                     map.put("reason", "token校验不正确");
                     String json_str = JSON.toJSONString(map);  //将map转换未JSON字符串
-
-                    //System.out.println("未携带token，认证失败");
                     response.setContentType("application/json;charset=UTF-8");
                     response.getWriter().print(json_str);
-
                     return;
                 }
 
@@ -123,5 +137,6 @@ public class AuthenticationTokenFilter implements Filter {
         }
 
         filterChain.doFilter(servletRequest, servletResponse);   //过滤
+        return;
     }
 }

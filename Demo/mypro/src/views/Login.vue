@@ -16,6 +16,15 @@
           class="form"
         ></el-input>
       </el-form-item>
+      <el-form-item label="验证码" id="captcha_item">
+        <img :src="captcha_src" @click="Captcha" />
+      </el-form-item>
+      <el-form-item id="captcha_input">
+        <el-input
+          placeholder="请输入验证码"
+          v-model="LoginForm.captcha"
+        ></el-input>
+      </el-form-item>
       <el-form-item id="btn">
         <el-button
           type="success"
@@ -38,22 +47,29 @@ import request from "../network/request";
 export default {
   data() {
     return {
+      captcha_src: "/api/captcha",
       token: "", //Token
-      LoginForm: {
+      LoginForm: {  //Form
         username: "",
         password: "",
+        captcha: "",
       },
     };
   },
   methods: {
+    Captcha() {
+      //点击一下，刷新验证码
+      this.captcha_src = "/api/captcha?date=" + new Date();
+    },
     Submit() {
       request({
         url: "/api/login", //访问后端登录API
         method: "post", //POST请求
         params: {
-          //传递表单的信息，username和password
+          //传递表单的信息，username和password和验证码
           username: this.LoginForm.username,
           password: this.LoginForm.password,
+          captcha: this.LoginForm.captcha,
         },
       })
         .then((res) => {
@@ -66,8 +82,13 @@ export default {
             alert("用户" + this.LoginForm.username + "登录成功");
             this.$router.push("/main"); //跳转到main页面
           } else {
-            //如果返回的是false
-            alert("账号或密码错误！");
+            //根据后端返回的信息给出警示
+            if(res.data.reason === "验证码不正确"){
+              alert("验证码不正确")
+            }else{
+              alert("账号或密码错误！");
+            }
+            
           }
         })
         .catch((err) => {
@@ -78,6 +99,7 @@ export default {
       this.$router.push("/register");
     },
   },
+
 };
 </script>
 
@@ -89,7 +111,17 @@ export default {
   width: 500px;
 }
 
-#submit,#reg{
+#submit,
+#reg {
   margin-left: 60px;
+}
+
+#captcha_item {
+  display: flex;
+}
+
+#captcha_input {
+  margin-top: 0px;
+  width: 500px;
 }
 </style>

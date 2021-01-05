@@ -9,10 +9,14 @@
       class="demo-RegForm"
     >
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="RegForm.username"></el-input>
+        <el-input
+          placeholder="请输入用户名"
+          v-model="RegForm.username"
+        ></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="pass">
         <el-input
+          placeholder="请输入密码"
           type="password"
           v-model="RegForm.pass"
           autocomplete="off"
@@ -20,9 +24,19 @@
       </el-form-item>
       <el-form-item label="确认密码" prop="checkPass">
         <el-input
+          placeholder="请再次输入密码"
           type="password"
           v-model="RegForm.checkPass"
           autocomplete="off"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="验证码" id="captcha_item">
+        <img :src="captcha_src" @click="Captcha" />
+      </el-form-item>
+      <el-form-item id="captcha_input">
+        <el-input
+          placeholder="请输入验证码"
+          v-model="RegForm.captcha"
         ></el-input>
       </el-form-item>
       <el-form-item>
@@ -37,7 +51,7 @@
 </template>
 
 <script>
-import request from "../network/request";  //导入axios
+import request from "../network/request"; //导入axios
 
 export default {
   data() {
@@ -105,10 +119,12 @@ export default {
       }
     };
     return {
+      captcha_src: "/api/captcha",
       RegForm: {
         pass: "",
         checkPass: "",
         username: "",
+        captcha: "",
       },
       rules: {
         pass: [{ validator: validatePass, trigger: "blur" }],
@@ -118,6 +134,10 @@ export default {
     };
   },
   methods: {
+    Captcha() {
+      //点击一下，刷新验证码
+      this.captcha_src = "/api/captcha?date=" + new Date();
+    },
     GoBack() {
       this.$router.go(-1); //回退到上一个页面
     },
@@ -129,12 +149,14 @@ export default {
             params: {
               username: this.RegForm.username,
               password: this.RegForm.checkPass,
+              captcha: this.RegForm.captcha,
             },
           })
             .then((res) => {
               console.log(res);
               var status = res.data.status; //获取后端返回的状态
-              if (status) {
+              console.log(status)
+              if (status == true) {
                 alert("用户" + this.RegForm.username + "注册成功");
                 this.$router.push("/login");
               } else {
@@ -168,6 +190,11 @@ export default {
   margin: auto;
   padding-top: 200px;
   height: 200px;
+  width: 400px;
+}
+
+#captcha_input {
+  margin-top: 0px;
   width: 400px;
 }
 </style>
