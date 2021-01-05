@@ -32,11 +32,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/login").permitAll()  //允许任意访问login页面
-                .antMatchers("/test").hasAuthority("admin")  //必须要有admin权限才能访问
-                .antMatchers("/test").hasAuthority("admin")  //必须要有admin权限才能访问
-                .antMatchers("/home").hasAnyAuthority("admin", "user")  //登录之后可以访问home页面
-                .anyRequest().permitAll();
+                .antMatchers("/register").permitAll()  //允许任意访问login页面
+                .antMatchers("/test").hasAnyAuthority("user","admin")  //必须要有admin权限才能访问
+                .antMatchers("/home").hasAnyAuthority("admin")  //登录之后可以访问home页面
+                .anyRequest().authenticated();
 
         http.formLogin()  //使用表单登录
                 .loginPage("/login")  //设置登录页面
@@ -45,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureForwardUrl("/failed");  //设置登录失败跳转的页面
 
         http.cors();  //允许跨域
-        http.csrf().disable();  //关闭跨站
+        http.csrf().disable();  //关闭跨站拦截
 
 
         //不使用SESSION，这样就不会生成COOKIE，我们需要使用TOKEN去鉴权

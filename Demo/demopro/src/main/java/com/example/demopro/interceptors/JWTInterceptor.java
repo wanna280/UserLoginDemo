@@ -23,6 +23,10 @@ public class JWTInterceptor implements HandlerInterceptor {   //实现拦截器�
             System.out.println("Incept-"+request.getRequestURI());
             return true;  //放行
         }
+        if(request.getRequestURI().equals("/register") ||request.getRequestURI().equals("/api/register")){
+            System.out.println("Incept-"+request.getRequestURI());
+            return true;  //放行
+        }
         String token = request.getHeader("token");  //获取请求头当中的token
         //System.out.println("token----"+token);
         try {

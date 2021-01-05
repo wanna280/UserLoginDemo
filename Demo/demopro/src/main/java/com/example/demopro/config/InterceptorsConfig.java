@@ -14,10 +14,11 @@ public class InterceptorsConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")   //拦截所有路径
                 .excludePathPatterns("/login")  //放行/login
                 .excludePathPatterns("/success") //放行/success
-                .excludePathPatterns("/failed"); //放行/failed
+                .excludePathPatterns("/failed") //放行/failed
+                .excludePathPatterns("/register");  //放行register
     }
 }
 
 //1.如果拦截器设置放行了某些路径，这些路径不会经过过滤器Filter
 //2.如果拦截器没有放行的路径，这些路径都会经过过滤器Filter
-//3.可以过滤器进行判断token，因为在拦截器中已经放行了/login，/success，/failed
+//3.可以过滤器进行判断token，因为在拦截器中已经放行了/login，/success，/failed，/register

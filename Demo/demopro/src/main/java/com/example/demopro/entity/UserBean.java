@@ -5,6 +5,15 @@ public class UserBean {
     private String username;  //用户名
     private String password;  //密码
 
+    public UserBean() {
+    }
+
+    public UserBean(int id, String username, String password) {
+        Id = id;
+        this.username = username;
+        this.password = password;
+    }
+
     public int getId() {
         return Id;
     }

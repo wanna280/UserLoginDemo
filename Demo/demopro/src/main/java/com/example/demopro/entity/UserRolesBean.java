@@ -5,6 +5,15 @@ public class UserRolesBean {
     private String username;  //用户名
     private String roles;  //角色
 
+    public UserRolesBean() {
+    }
+
+    public UserRolesBean(int id, String username, String roles) {
+        Id = id;
+        this.username = username;
+        this.roles = roles;
+    }
+
     public int getId() {
         return Id;
     }

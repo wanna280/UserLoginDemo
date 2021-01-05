@@ -1,19 +1,34 @@
 <template>
   <div id="loginForm">
-    <el-input
-      v-model="LoginForm.username"
-      placeholder="请输入内容"
-      class="form"
-    ></el-input>
-    <el-input
-      placeholder="请输入密码"
-      v-model="LoginForm.password"
-      show-password
-      class="form"
-    ></el-input>
-    <el-button type="submit" id="submit" class="form" @click="submit"
-      >Submit</el-button
-    >
+    <el-form label-width="100px" class="demo-ruleForm">
+      <el-form-item label="用户名">
+        <el-input
+          v-model="LoginForm.username"
+          placeholder="请输入用户名"
+          class="form"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="密码">
+        <el-input
+          placeholder="请输入密码"
+          v-model="LoginForm.password"
+          show-password
+          class="form"
+        ></el-input>
+      </el-form-item>
+      <el-form-item id="btn">
+        <el-button
+          type="success"
+          id="submit"
+          class="form_submit"
+          @click="Submit"
+          >登录</el-button
+        >
+        <el-button type="primary" id="reg" class="form_reg" @click="Register"
+          >注册</el-button
+        >
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -31,7 +46,7 @@ export default {
     };
   },
   methods: {
-    submit() {
+    Submit() {
       request({
         url: "/api/login", //访问后端登录API
         method: "post", //POST请求
@@ -59,26 +74,22 @@ export default {
           console.log(err);
         });
     },
+    Register() {
+      this.$router.push("/register");
+    },
   },
-
 };
 </script>
 
 
 <style>
-.form {
-  margin-top: 10px;
-}
-
 #loginForm {
-  width: 400px;
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: auto;
+  padding-top: 200px;
+  width: 500px;
 }
 
-#submit {
-  margin-top: 10px;
+#submit,#reg{
+  margin-left: 60px;
 }
 </style>

@@ -16,4 +16,8 @@
     <select id="GetUserRolesByUserName" resultMap="UserRoles">
         select * from wann.userRoles where username = #{username};
     </select>
+
+    <insert id="InsertOneUserRole">
+        insert into wann.userRoles(id,username,roles) values(#{id},#{username},#{roles})
+    </insert>
 </mapper>

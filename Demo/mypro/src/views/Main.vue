@@ -12,20 +12,20 @@ export default {
   },
   created() {
     this.token = localStorage.getItem("token");
-    request({
-      url: "/api/test",
-      method: "get",
-      headers: {
-        token: this.token,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        //console.log(localStorage.getItem("token"))
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // request({
+    //   url: "/api/test",
+    //   method: "get",
+    //   headers: {
+    //     token: this.token,
+    //   },
+    // })
+    //   .then((res) => {
+    //     console.log(res);
+    //     //console.log(localStorage.getItem("token"))
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   },
 };
 </script>

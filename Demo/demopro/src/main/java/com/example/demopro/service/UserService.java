@@ -13,15 +13,43 @@ public class UserService {
     @Autowired
     UserDao userDao;
 
-    public ArrayList<UserBean> GetUserById(int id) {  //通过id查询
-        return userDao.GetUserById(id);
+    public UserBean GetUserById(int id) {  //通过id查询
+        UserBean user;
+        try{
+            user = userDao.GetUserById(id);
+        }catch (Exception ex){
+            user = null;
+        }
+        return user;
     }
 
-    public ArrayList<UserBean> UserLogin(UserBean user) {
-        return userDao.UserLogin(user);
+    public UserBean UserLogin(UserBean user) {
+        UserBean userBean;
+        try{
+            userBean = userDao.UserLogin(user);
+        }catch (Exception ex){
+            userBean = null;
+        }
+        return userBean;
     }
 
-    public ArrayList<UserBean> GetUserByUserName(String username) {
-        return userDao.GetUserByUserName(username);
+    public UserBean GetUserByUserName(String username) {
+        UserBean user;
+        try{
+            user = userDao.GetUserByUserName(username);
+        }catch (Exception ex){
+            user = null;
+        }
+        return user;
+    }
+
+    public boolean InsertOneUser(UserBean userBean) {
+        try {   //插入成功return true
+            userDao.InsertOneUser(userBean);
+            return true;
+        } catch (Exception ex) {
+
+        }
+        return false;
     }
 }

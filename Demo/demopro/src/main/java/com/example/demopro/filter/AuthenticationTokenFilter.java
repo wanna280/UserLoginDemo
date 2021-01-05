@@ -74,6 +74,13 @@ public class AuthenticationTokenFilter implements Filter {
                 filterChain.doFilter(servletRequest,servletResponse);
                 return;
             }
+            //如果是注册，一律放行
+            if(request.getRequestURI().equals("/register")||request.getRequestURI().equals("/api/register")){
+                System.out.println("Filter-"+request.getRequestURI());
+                filterChain.doFilter(servletRequest,servletResponse);
+                return;
+            }
+
             //获取Http请求中的Header中的token部分的内容
             String token = ((HttpServletRequest) servletRequest).getHeader("token");
             //System.out.println(token);  //打印获取到的token

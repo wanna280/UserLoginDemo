@@ -28,11 +28,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         try {
-            ArrayList<UserBean> users = userService.GetUserByUserName(username);   //根据用户名查询用户
-            ArrayList<UserRolesBean> userRoles = userRolesService.GetUserRolesByUserName(users.get(0).getUsername());
+            UserBean user = userService.GetUserByUserName(username);   //根据用户名查询用户
+            UserRolesBean userRoles = userRolesService.GetUserRolesByUserName(user.getUsername());
             Collection<GrantedAuthority> auth = new ArrayList<>();
-            auth.add(new SimpleGrantedAuthority(userRoles.get(0).getRoles()));
-            return new User(users.get(0).getUsername(), users.get(0).getPassword(), auth);
+            auth.add(new SimpleGrantedAuthority(userRoles.getRoles()));
+            return new User(user.getUsername(), user.getPassword(), auth);
         } catch (Exception ex){   //登录失败怎么处理呢？？？
             ex.printStackTrace();
 

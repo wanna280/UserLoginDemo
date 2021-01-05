@@ -9,8 +9,9 @@ import java.util.ArrayList;
 @Repository
 @Mapper
 public interface UserDao {
-    public ArrayList<UserBean> GetUserById(int id);   //根据用户ID查询用户
-    public ArrayList<UserBean> UserLogin(UserBean userBean);  //根据用户名和用户名查询数据
-    public ArrayList<UserBean> GetUserByUserName(String username);  //根据用户名查询数据
+    public UserBean GetUserById(int id);   //根据用户ID查询用户
+    public UserBean UserLogin(UserBean userBean);  //根据用户名和用户名查询数据
+    public UserBean GetUserByUserName(String username);  //根据用户名查询数据
+    public void InsertOneUser(UserBean userBean);    //插入一个用户
 
 }
