@@ -8,6 +8,11 @@ public class UserRolesBean {
     public UserRolesBean() {
     }
 
+    public UserRolesBean(String username, String roles) {
+        this.username = username;
+        this.roles = roles;
+    }
+
     public UserRolesBean(int id, String username, String roles) {
         Id = id;
         this.username = username;

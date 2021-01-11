@@ -50,11 +50,11 @@ public class WebCROSConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost", "null")
-                .allowedOrigins("http://localhost:8080", "null")
-                .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE")
+    public void addCorsMappings(CorsRegistry registry) {  //配置跨域请求
+        registry.addMapping("/**")  //允许跨域的Mapping是/**
+                .allowedOrigins("http://localhost", "null")  //跨域源允许localhost
+                .allowedOrigins("http://localhost:8080", "null") //跨域源允许localhost:8080
+                .allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE") //允许跨域的方法
                 .allowCredentials(true)
                 .maxAge(3600);
     }

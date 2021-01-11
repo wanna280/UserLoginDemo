@@ -84,6 +84,8 @@ public class AuthenticationTokenFilter implements Filter {
 //                System.out.println("Filter拦截的URI为" + request.getRequestURI());
                 filterChain.doFilter(servletRequest, servletResponse);
                 return;
+            } else {
+
             }
 
             //获取Http请求中的Header中的token部分的内容
@@ -126,6 +128,8 @@ public class AuthenticationTokenFilter implements Filter {
                 response.getWriter().print(json_str);  //写进响应体
                 return;
             }
+        } else {
+
         }
 
         filterChain.doFilter(servletRequest, servletResponse);   //过滤
