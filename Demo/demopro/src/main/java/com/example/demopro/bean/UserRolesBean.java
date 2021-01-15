@@ -1,4 +1,4 @@
-package com.example.demopro.entity;
+package com.example.demopro.bean;
 
 public class UserRolesBean {
     private int Id;  //ID

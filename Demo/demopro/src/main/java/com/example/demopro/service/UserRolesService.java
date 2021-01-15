@@ -1,12 +1,9 @@
 package com.example.demopro.service;
 
 import com.example.demopro.dao.UserRolesDao;
-import com.example.demopro.entity.UserBean;
-import com.example.demopro.entity.UserRolesBean;
+import com.example.demopro.bean.UserRolesBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 public class UserRolesService {

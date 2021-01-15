@@ -33,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register").permitAll()  //允许任意访问register页面
                 .antMatchers("/test").hasAnyAuthority("user","admin")  //必须要有admin权限才能访问
                 .antMatchers("/home").hasAnyAuthority("admin")  //登录之后可以访问home页面
+                .antMatchers("/blog").hasAnyAuthority("user","admin")  //允许访问
                 .anyRequest().authenticated();
 
         http.formLogin()  //使用表单登录

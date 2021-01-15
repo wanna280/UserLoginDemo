@@ -5,35 +5,52 @@ import Home from '../views/Home.vue'
 import request from "../network/request"
 
 Vue.use(VueRouter)
-const Main = () =>
+
+const Main = () => //主页面，显示博客主页面等信息
     import ('../views/Main.vue');
 
-const Register = () =>
+const Register = () => //注册页面
     import ("../views/Register.vue")
 
-const routes = [{
+const WriteBlog = () => //写博客页面
+    import ("../views/Blog/MyBlog_Write.vue")
+
+const BlogDetails = () => //博客详情页
+    import ("../views/Blog/MyBlog_Details.vue")
+
+const routes = [{ //设置重定向路径为登录页面
         path: '/', //根路径直接重定向到/login
         redirect: '/login'
     },
-    {
+    { //Home
         path: '/',
         name: 'Home',
         component: Home,
     },
-    {
+    { //登录页面
         path: '/login',
         name: 'Login',
         component: Login
     },
-    {
+    { //main主页面
         path: '/main',
         name: 'Main',
         component: Main
     },
-    {
+    { //注册页面
         path: "/register",
         name: 'Register',
         component: Register
+    },
+    { //写博客页面
+        path: '/writeblog',
+        name: 'WriteBlog',
+        component: WriteBlog
+    },
+    { //博客详情页面
+        path: '/blogdetails',
+        name: 'BlogDetails',
+        component: BlogDetails
     }
 ]
 
@@ -65,17 +82,18 @@ router.beforeEach((to, from, next) => {
                     next("/login")
                 }
             })
-            .catch((err) => {
+            .catch((err) => { //打印异常并跳转到next页面
                 console.log(err)
                 next("/login")
             })
     }
-    next()
+    next() //next，必须调用，才能进行下一步
 })
 
+//避免使用this.$router.push()报错
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
     return originalPush.call(this, location).catch(err => err)
 }
 
-export default router
+export default router //导出路由

@@ -1,12 +1,9 @@
 package com.example.demopro.service;
 
 import com.example.demopro.dao.UserDao;
-import com.example.demopro.entity.UserBean;
+import com.example.demopro.bean.UserBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.ArrayList;
 
 @Service
 public class UserService {

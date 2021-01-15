@@ -42,19 +42,20 @@
 </template>
 
 <script>
+//导入网络请求包（封装的axios）
 import request from "../network/request";
 
 export default {
   data() {
     return {
-      captcha_src: "",
+      captcha_src: "", //验证码路径
       token: "", //Token
       LoginForm: {
         //Form
-        username: "",
-        password: "",
-        captcha: "",
-        uuid:"",
+        username: "", //用户名
+        password: "", //密码
+        captcha: "", //验证码
+        uuid: "", //uuid，后端给的用来校验redis中的验证码
       },
     };
   },
@@ -66,23 +67,27 @@ export default {
       })
         .then((res) => {
           //console.log(res);
+          //设置图形验证码的base64编码，直接解析为图片
           this.captcha_src = res.data.captcha_base64;
+          //获取uuid，用来给后端查询redis数据库校验验证码
           this.LoginForm.uuid = res.data.uuid;
         })
         .catch((err) => {
+          //请求失败打印失败信息
           console.log(err);
         });
     },
     Submit() {
+      //提交
       request({
         url: "/api/login", //访问后端登录API
         method: "post", //POST请求
         params: {
-          //传递表单的信息，username和password和验证码
+          //传递表单的信息，username和password和验证码，以及uuid
           username: this.LoginForm.username,
           password: this.LoginForm.password,
           captcha: this.LoginForm.captcha,
-          uuid:this.LoginForm.uuid
+          uuid: this.LoginForm.uuid,
         },
       })
         .then((res) => {
@@ -101,7 +106,7 @@ export default {
             } else {
               alert("账号或密码错误！");
             }
-            this.Captcha()
+            this.Captcha(); //刷新验证码
           }
         })
         .catch((err) => {
@@ -109,19 +114,25 @@ export default {
         });
     },
     Register() {
+      //注册，点击注册按钮跳转到注册页面
       this.$router.push("/register");
     },
   },
   created() {
+    //生命周期函数，当组件创建
     request({
+      //请求后端验证码api，得到主页的验证码
       url: "/api/captcha",
     })
       .then((res) => {
         //console.log(res);
+        //将页面中的验证码路径设为后端api返回的base64编码的验证码
         this.captcha_src = res.data.captcha_base64;
+        //唯一的uuid，用来传递给后端查询redis做验证码校验
         this.LoginForm.uuid = res.data.uuid;
       })
       .catch((err) => {
+        //请求失败打印失败信息
         console.log(err);
       });
   },

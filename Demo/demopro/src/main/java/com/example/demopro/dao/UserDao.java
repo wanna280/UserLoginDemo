@@ -1,10 +1,8 @@
 package com.example.demopro.dao;
 
-import com.example.demopro.entity.UserBean;
+import com.example.demopro.bean.UserBean;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
 
 @Repository
 @Mapper

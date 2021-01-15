@@ -1,7 +1,7 @@
 package com.example.demopro.service.Impl;
 
-import com.example.demopro.entity.UserBean;
-import com.example.demopro.entity.UserRolesBean;
+import com.example.demopro.bean.UserBean;
+import com.example.demopro.bean.UserRolesBean;
 import com.example.demopro.service.UserRolesService;
 import com.example.demopro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

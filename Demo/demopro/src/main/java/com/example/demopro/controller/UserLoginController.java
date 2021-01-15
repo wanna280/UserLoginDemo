@@ -1,7 +1,7 @@
 package com.example.demopro.controller;
 
-import com.example.demopro.entity.UserBean;
-import com.example.demopro.entity.UserRolesBean;
+import com.example.demopro.bean.UserBean;
+import com.example.demopro.bean.UserRolesBean;
 import com.example.demopro.service.UserRolesService;
 import com.example.demopro.service.UserService;
 import com.example.demopro.utils.CaptchaUtils;
@@ -107,27 +107,30 @@ public class UserLoginController {
 
     @ResponseBody
     @RequestMapping("/captcha")  //返回一个html页面，并且是图片格式的
-    public Map<String,Object> Captcha(HttpServletRequest request, HttpServletResponse response) {
+    public Map<String, Object> Captcha(HttpServletRequest request, HttpServletResponse response) {
 
-        Map<String,Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();  //创建一个map，用来给前端返回
 
         Jedis jedis = new Jedis("47.107.157.20", 6379);
         jedis.auth("123456");
-        CaptchaUtils vc = new CaptchaUtils();
+
+        CaptchaUtils vc = new CaptchaUtils();  //创建验证码工具类对象
         String captchaString = "";  //验证码的字符
         try {
-            UUID uuid = UUID.randomUUID();
-            String code_base64 = vc.BufferedImageToBase64(vc.getImage());
+            UUID uuid = UUID.randomUUID();  //生成uuid
+            String code_base64 = vc.BufferedImageToBase64(vc.getImage()); //将图片验证码抓换为base64编码
 
-            map.put("uuid",uuid.toString());
-            map.put("captcha_base64",code_base64);
-            captchaString = vc.getText();
+            map.put("uuid", uuid.toString());  //往map中放入uuid
+            map.put("captcha_base64", code_base64);  //往map中放入验证码的base64编码
+            captchaString = vc.getText();  //获取验证码的文本
+
+            //将uuid作为key，验证码作为value存入redis
             jedis.set("capt_key_" + uuid.toString(), captchaString);
-            jedis.expire("capt_key_" + uuid.toString(),60);  //验证码60秒过期
+            jedis.expire("capt_key_" + uuid.toString(), 60);  //验证码60秒过期
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return map;
+        return map;  //return map
     }
 
 }

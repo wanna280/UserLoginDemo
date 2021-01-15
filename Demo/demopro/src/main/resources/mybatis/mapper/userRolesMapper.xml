@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.demopro.dao.UserRolesDao">
-    <resultMap id="UserRoles" type="com.example.demopro.entity.UserRolesBean">
+    <resultMap id="UserRoles" type="com.example.demopro.bean.UserRolesBean">
         <result column="id" property="id"></result>
         <result column="username" property="username"></result>
         <result column="roles" property="roles"></result>

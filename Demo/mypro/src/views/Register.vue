@@ -51,7 +51,8 @@
 </template>
 
 <script>
-import request from "../network/request"; //导入axios
+//导入网络请求包(封装的axios)
+import request from "../network/request";
 
 export default {
   data() {
@@ -104,32 +105,39 @@ export default {
               new Error("密码可以使用数字、字母和下划线，但不能使用其他符号")
             );
           } else {
-            callback();
+            callback(); //callback
           }
         }
       }, 500);
     };
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
+        //如果是空，给出警示
         callback(new Error("请再次输入密码"));
       } else if (value !== this.RegForm.pass) {
+        //如果两次密码不等，给出警示
         callback(new Error("两次输入密码不一致!"));
       } else {
         callback();
       }
     };
     return {
-      captcha_src: "",
+      captcha_src: "", //验证码src
       RegForm: {
-        pass: "",
-        checkPass: "",
-        username: "",
-        captcha: "",
-        uuid: "",
+        //注册表单
+        pass: "", //密码
+        checkPass: "", //重复密码
+        username: "", //用户名
+        captcha: "", //验证码
+        uuid: "", //uuid
       },
       rules: {
+        //规则，用来校验用户名和密码的输入情况
+        //校验密码
         pass: [{ validator: validatePass, trigger: "blur" }],
+        //校验重复输入的密码
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
+        //用户名
         username: [{ validator: checkUserName, trigger: "blur" }],
       },
     };
@@ -142,7 +150,9 @@ export default {
       })
         .then((res) => {
           //console.log(res);
+          //设置图形验证码的src
           this.captcha_src = res.data.captcha_base64;
+          //获取uuid
           this.RegForm.uuid = res.data.uuid;
         })
         .catch((err) => {
@@ -150,60 +160,68 @@ export default {
         });
     },
     GoBack() {
+      //回退页面
       this.$router.go(-1); //回退到上一个页面
     },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          //如果合法，请求后端的注册api
           request({
             url: "/api/register",
             params: {
-              username: this.RegForm.username,
-              password: this.RegForm.checkPass,
-              captcha: this.RegForm.captcha,
-              uuid: this.RegForm.uuid,
+              username: this.RegForm.username, //用户名
+              password: this.RegForm.checkPass, //密码
+              captcha: this.RegForm.captcha, //验证码
+              uuid: this.RegForm.uuid, //uuid
             },
           })
             .then((res) => {
               console.log(res);
               var status = res.data.status; //获取后端返回的状态
-              //console.log(status);
               if (status == true) {
                 alert("用户" + this.RegForm.username + "注册成功");
                 this.$router.push("/login");
               } else {
+                //只要注册请求失败，就刷新验证码
                 alert(
+                  //弹框打印吃鱼来注册失败的原因，原因由后端给出
                   "用户" +
                     this.RegForm.username +
                     "注册失败，原因是：" +
                     res.data.reason
                 );
-                this.Captcha()
+                this.Captcha(); //刷新验证码
               }
             })
             .catch((err) => {
               console.log(err);
             });
         } else {
-          console.log("提交失败，清检查输入的信息");
+          console.log("提交失败，请检查输入的信息");
           return false;
         }
       });
     },
     resetForm(formName) {
+      //重置按钮，按下按钮重置表单中的信息
       this.$refs[formName].resetFields();
     },
   },
   created() {
     request({
+      //请求后端验证码api，显示出图形验证码
       url: "/api/captcha",
     })
       .then((res) => {
         //console.log(res);
+        //设置图形验证码的src（base64编码）
         this.captcha_src = res.data.captcha_base64;
+        //设置uuid，用于后端数据库的校验
         this.RegForm.uuid = res.data.uuid;
       })
       .catch((err) => {
+        //请求失败打印错误信息
         console.log(err);
       });
   },
