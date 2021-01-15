@@ -21,9 +21,10 @@
     </environments>
 
     <!-- 映射文件路径，一个mapper标签配置一个xml映射文件 -->
-        <mappers>
-            <mapper resource="mybatis/mapper/userMapper.xml"/>
-            <mapper resource="mybatis/mapper/blogMapper.xml" />
-            <mapper resource="mybatis/mapper/userRolesMapper.xml" />
-        </mappers>
+    <!-- 可以在application.yaml中配置   -->
+    <mappers>
+        <mapper resource="mybatis/mapper/userMapper.xml"/>
+        <mapper resource="mybatis/mapper/blogMapper.xml"/>
+        <mapper resource="mybatis/mapper/userRolesMapper.xml"/>
+    </mappers>
 </configuration>

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        https://www.springframework.org/schema/beans/spring-beans.xsd">
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        ">
 
+    <!--    将配置信息独立出去作为一个独立的properties配置文件，使用context标签   -->
+    <!--   只能使用.properties类型文件，.yaml文件不行，得用其他办法  -->
+<!--    <context:property-placeholder location="classpath:jdbc.properties"/>-->
     <!--  提供连接数据库的信息，声明数据源  -->
     <bean id="MyDruidDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
           destroy-method="close">
@@ -16,6 +23,7 @@
 
     </bean>
 
+
     <!--  创建SqlSessionFactoryBean  -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!--    使用set注入    -->
@@ -27,7 +35,7 @@
 
     <!--  创建dao对象,使用SqlSession的Mapper  -->
     <!--  在这个类中调用getMapper生成每个dao的代理对象  -->
-    <!--  可以在Application中使用@MapperScan注解扫描dao  -->
+    <!--  可以在Application中使用@MapperScan注解扫描dao？？暂时不会  -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!--    指定SqlSessionFactoryBean的Id    -->
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
@@ -36,5 +44,11 @@
         <!--     多个包可以使用,或者;分隔   -->
         <property name="basePackage" value="com.example.demopro.dao"></property>
     </bean>
+
+    <!--  可以在类中使用@Service注解，就不用写这段配置文件了  -->
+    <!--    <bean id="userService" class="com.example.demopro.service.UserService">-->
+    <!--        &lt;!&ndash;    使用set设置userDao的值    &ndash;&gt;-->
+    <!--        <property name="userDao" ref="userDao"></property>-->
+    <!--    </bean>-->
 
 </beans>
