@@ -1,11 +1,13 @@
 package com.example.demopro.dao;
 
 import com.example.demopro.bean.BlogBean;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
 @Repository
+@Mapper
 public interface BlogDao {
     public BlogBean GetBlogById(int id);  //通过ID查找
     public ArrayList<BlogBean> GetBlogsByUserName(String username);  //通过username查询

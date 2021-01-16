@@ -20,7 +20,6 @@
         <property name="password" value="123456"></property>
         <!--    最大活跃数    -->
         <property name="maxActive" value="20"></property>
-
     </bean>
 
 

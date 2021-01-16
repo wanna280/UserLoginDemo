@@ -4,22 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-    <!-- 设置默认的数据源，用于切换开发环境和生产环境的数据源  -->
-    <environments default="development">
-
-        <!-- 配置数据源  -->
-        <environment id="development">
-            <!-- 使用JDBC事务管理（使用JDBC中Connection对象的commit、rollback做事务处理） -->
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://47.107.157.20:3306/wann"/>
-                <property name="username" value="wann"/>
-                <property name="password" value="123456"/>
-            </dataSource>
-        </environment>
-    </environments>
-
     <!-- 映射文件路径，一个mapper标签配置一个xml映射文件 -->
     <!-- 可以在application.yaml中配置   -->
     <mappers>
