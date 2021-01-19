@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 
 @Component
 public class DataSourceConfig {
-    //创建数据源2
+    //创建数据源1
     @ConfigurationProperties(prefix = "spring.datasource.druid1")  //扫描配置文件
     @Bean(name = "druidDataSource1", initMethod = "init", destroyMethod = "close")
     public DataSource druidDataSource1() {

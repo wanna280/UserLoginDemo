@@ -10,5 +10,7 @@
 
     <!--  导入Druid的配置文件  -->
     <!--    <import resource="classpath:config/DruidConfig.xml"></import>-->
-    <import resource="classpath:config/SqlSessionFactoryBeanConfig.xml" ></import>
+
+    <!--  导入SqlSessionFactoryBean  -->
+    <import resource="classpath:config/SqlSessionFactoryBeanConfig.xml"/>
 </beans>

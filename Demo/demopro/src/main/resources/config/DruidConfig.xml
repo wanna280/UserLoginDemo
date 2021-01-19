@@ -10,26 +10,25 @@
 
     <!--    将配置信息独立出去作为一个独立的properties配置文件，使用context标签   -->
     <!--   只能使用.properties类型文件，.yaml文件不行，得用其他办法  -->
-<!--    <context:property-placeholder location="classpath:jdbc.properties"/>-->
+    <!--    <context:property-placeholder location="classpath:application.yaml"/>-->
     <!--  提供连接数据库的信息，声明数据源  -->
-    <bean id="MyDruidDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+    <bean id="myDruidDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
           destroy-method="close">
         <!-- 使用set注入 -->
-        <property name="url" value="jdbc:mysql://47.107.157.20:3306/wann"></property>
-        <property name="username" value="wann"></property>
-        <property name="password" value="123456"></property>
+        <property name="url" value="jdbc:mysql://47.107.157.20:3306/wann"/>
+        <property name="username" value="wann"/>
+        <property name="password" value="123456"/>
         <!--    最大活跃数    -->
-        <property name="maxActive" value="20"></property>
+        <property name="maxActive" value="20"/>
     </bean>
-
 
     <!--  创建SqlSessionFactoryBean  -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!--    使用set注入    -->
         <!--     设置数据源为Druid连接池   -->
-        <property name="dataSource" ref="MyDruidDataSource"></property>
+        <property name="dataSource" ref="MyDruidDataSource"/>
         <!--     指定mapper（mybatis）主配置文件   -->
-        <property name="configLocation" value="classpath:mybatis/config/mybatis-config.xml"></property>
+        <property name="configLocation" value="classpath:mybatis/config/mybatis-config.xml"/>
     </bean>
 
     <!--  创建dao对象,使用SqlSession的Mapper  -->
@@ -37,11 +36,11 @@
     <!--  可以在Application中使用@MapperScan注解扫描dao？？暂时不会  -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <!--    指定SqlSessionFactoryBean的Id    -->
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
         <!--     指定包名，MapperScanConfigurer会扫描这个包中的所有接口，并都执行一次getMapper方法   -->
         <!--     得到每个接口的dao对象，创建好的dao对象是放在spring的容器当中的   -->
         <!--     多个包可以使用,或者;分隔   -->
-        <property name="basePackage" value="com.example.demopro.dao"></property>
+        <property name="basePackage" value="com.example.demopro.dao"/>
     </bean>
 
     <!--  可以在类中使用@Service注解，就不用写这段配置文件了  -->

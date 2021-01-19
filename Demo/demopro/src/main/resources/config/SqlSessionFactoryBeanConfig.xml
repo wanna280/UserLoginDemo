@@ -11,8 +11,8 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <!--    使用set注入    -->
         <!--     设置数据源为Druid连接池   -->
-        <property name="dataSource" ref="druidDataSource1"></property>
+        <property name="dataSource" ref="druidDataSource1"/>
         <!--     指定mapper（mybatis）主配置文件   -->
-        <property name="configLocation" value="classpath:mybatis/config/mybatis-config.xml"></property>
+        <property name="configLocation" value="classpath:mybatis/config/mybatis-config.xml"/>
     </bean>
 </beans>
