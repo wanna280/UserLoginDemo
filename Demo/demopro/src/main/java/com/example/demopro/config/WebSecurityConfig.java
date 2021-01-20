@@ -15,13 +15,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.annotation.Resource;
+
 @Configuration
 @EnableWebSecurity  //使用EnableWebSecurity注解，引入SpringSecurity的安全支持
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
+    @Resource
     AuthenticationTokenFilter authenticationTokenFilter;
-    @Autowired
+    @Resource
     UserDetailsServiceImpl userDetailsService;
 
     @Override

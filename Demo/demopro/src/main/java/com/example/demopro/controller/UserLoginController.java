@@ -2,8 +2,9 @@ package com.example.demopro.controller;
 
 import com.example.demopro.bean.UserBean;
 import com.example.demopro.bean.UserRolesBean;
-import com.example.demopro.service.UserRolesService;
-import com.example.demopro.service.UserService;
+import com.example.demopro.service.Impl.RedisServiceImpl;
+import com.example.demopro.service.Impl.UserRolesServiceImpl;
+import com.example.demopro.service.Impl.UserServiceImpl;
 import com.example.demopro.utils.CaptchaUtils;
 import com.example.demopro.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import redis.clients.jedis.Jedis;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
@@ -22,10 +23,12 @@ import java.util.UUID;
 
 @Controller
 public class UserLoginController {
-    @Autowired
-    UserService userService;
-    @Autowired
-    UserRolesService userRolesService;
+    @Resource
+    private UserServiceImpl userService;
+    @Resource
+    private UserRolesServiceImpl userRolesService;
+    @Resource
+    private RedisServiceImpl redisService;
 
     @RequestMapping("/login")   //前端请求登录的页面
     public String Login(UserBean userBean) {
@@ -106,13 +109,10 @@ public class UserLoginController {
     }
 
     @ResponseBody
-    @RequestMapping("/captcha")  //返回一个html页面，并且是图片格式的
+    @RequestMapping("/captcha")  //返回一个html页面，并且是图片格式的(base64)
     public Map<String, Object> Captcha(HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> map = new HashMap<>();  //创建一个map，用来给前端返回
-
-        Jedis jedis = new Jedis("47.107.157.20", 6379);
-        jedis.auth("123456");
 
         CaptchaUtils vc = new CaptchaUtils();  //创建验证码工具类对象
         String captchaString = "";  //验证码的字符
@@ -125,8 +125,8 @@ public class UserLoginController {
             captchaString = vc.getText();  //获取验证码的文本
 
             //将uuid作为key，验证码作为value存入redis
-            jedis.set("capt_key_" + uuid.toString(), captchaString);
-            jedis.expire("capt_key_" + uuid.toString(), 60);  //验证码60秒过期
+            //验证码60秒过期
+            redisService.set("capt_key_" + uuid.toString(), captchaString, 60);
         } catch (Exception e) {
             e.printStackTrace();
         }

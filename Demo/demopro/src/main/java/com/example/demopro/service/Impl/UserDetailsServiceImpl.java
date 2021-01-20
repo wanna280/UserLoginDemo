@@ -2,8 +2,6 @@ package com.example.demopro.service.Impl;
 
 import com.example.demopro.bean.UserBean;
 import com.example.demopro.bean.UserRolesBean;
-import com.example.demopro.service.UserRolesService;
-import com.example.demopro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,16 +11,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    UserService userService;
+    @Resource
+    UserServiceImpl userService;
 
-    @Autowired
-    UserRolesService userRolesService;
+    @Resource
+    UserRolesServiceImpl userRolesService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

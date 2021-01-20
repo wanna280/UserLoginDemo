@@ -1,13 +1,14 @@
 package com.example.demopro.controller.Blog;
 
 import com.example.demopro.bean.BlogBean;
-import com.example.demopro.service.BlogService;
+import com.example.demopro.service.Impl.BlogServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,8 +17,8 @@ import java.util.Map;
 @RestController
 public class BlogController {
 
-    @Autowired
-    BlogService blogService;
+    @Resource
+    BlogServiceImpl blogService;
 
     //使用Restful风格
     @RequestMapping(value = "/blog", method = RequestMethod.POST) //POST方式请求

@@ -2,8 +2,9 @@ package com.example.demopro.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.example.demopro.service.Impl.UserDetailsServiceImpl;
-import com.example.demopro.service.UserRolesService;
-import com.example.demopro.service.UserService;
+import com.example.demopro.service.Impl.RedisServiceImpl;
+import com.example.demopro.service.Impl.UserRolesServiceImpl;
+import com.example.demopro.service.Impl.UserServiceImpl;
 import com.example.demopro.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import redis.clients.jedis.Jedis;
 
+import javax.annotation.Resource;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -29,12 +30,14 @@ import java.util.*;
 @WebFilter(urlPatterns = "/**")
 @Configuration
 public class AuthenticationTokenFilter implements Filter {
-    @Autowired
-    UserService userService;
-    @Autowired
-    UserRolesService userRolesService;
-    @Autowired
+    @Resource
+    UserServiceImpl userService;
+    @Resource
+    UserRolesServiceImpl userRolesService;
+    @Resource
     UserDetailsServiceImpl userDetailsService;
+    @Resource
+    RedisServiceImpl redisService;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -59,10 +62,8 @@ public class AuthenticationTokenFilter implements Filter {
             if (request.getRequestURI().equals("/login") || request.getRequestURI().equals("/register")) {
                 System.out.println("Filter拦截的URI为" + request.getRequestURI());
                 String captcha = request.getParameter("captcha");
-                Jedis jedis = new Jedis("47.107.157.20", 6379);
-                jedis.auth("123456");
                 String key_uuid = request.getParameter("uuid");
-                String captcha_s = jedis.get("capt_key_" + key_uuid);
+                String captcha_s = redisService.get("capt_key_" + key_uuid);
 
                 //如果验证码一致，则放行，验证码不区分大小写，因此这里统一转换为小写来判断
                 if (captcha.toLowerCase().equals(captcha_s.toLowerCase())) {
