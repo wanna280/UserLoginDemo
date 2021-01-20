@@ -82,9 +82,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }catch (Exception ex){
 
         }
-
-
-
     }
 
     @Override

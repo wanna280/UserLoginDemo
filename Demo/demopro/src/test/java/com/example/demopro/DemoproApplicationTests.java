@@ -1,7 +1,11 @@
 package com.example.demopro;
 
+import com.example.demopro.bean.BlogBean;
 import com.example.demopro.bean.UserBean;
+import com.example.demopro.bean.UserRolesBean;
+import com.example.demopro.service.Impl.BlogServiceImpl;
 import com.example.demopro.service.Impl.RedisServiceImpl;
+import com.example.demopro.service.Impl.UserRolesServiceImpl;
 import com.example.demopro.service.Impl.UserServiceImpl;
 import com.example.demopro.utils.JedisPoolUtils;
 import org.junit.jupiter.api.Test;
@@ -19,9 +23,17 @@ class DemoproApplicationTests {
     @Autowired
     UserServiceImpl userService;
 
+    @Autowired
+    UserRolesServiceImpl userRolesService;
+
+    @Autowired
+    BlogServiceImpl blogService;
+
     @Test
     void TestConfig() {
-        UserBean userBean = userService.GetUserByUserName("wanna");
-        System.out.println(userBean.getUsername());
+//        UserBean userBean = userService.GetUserByUserName("wanna");
+//        System.out.println(userBean.getUsername());
+        UserRolesBean userRolesBean = userRolesService.GetUserRolesByUserName("wanna");
+        System.out.println(userRolesBean.getRoles());
     }
 }

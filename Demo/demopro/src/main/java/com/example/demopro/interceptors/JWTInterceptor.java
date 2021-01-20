@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class JWTInterceptor implements HandlerInterceptor {   //实现拦截器接口
 
-    //先经历过滤器，再经历拦截器？？？
+    //先经历过滤器，再经历拦截器？？？对！！！！
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Map<String, Object> map = new HashMap<>();   //map

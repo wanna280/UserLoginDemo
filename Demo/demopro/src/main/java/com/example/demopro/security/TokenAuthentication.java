@@ -49,7 +49,7 @@ public class TokenAuthentication implements Authentication {
         try {
             Claims claims = JwtUtils.VerifyJwt(this.token);
             String claims_username = (String) claims.get("username");  //尝试从claims获取username字段，获取失败则认证失败
-            System.out.println("认证的用户名为"+claims_username);
+            System.out.println("认证的用户名为" + claims_username);
             return true;
         } catch (Exception ex) {//如果没有认证成功
             System.out.println("认证失败");  //后台打印认证失败信息
