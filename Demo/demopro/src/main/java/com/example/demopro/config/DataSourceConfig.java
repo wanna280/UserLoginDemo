@@ -12,14 +12,14 @@ import javax.sql.DataSource;
 public class DataSourceConfig {
     //创建数据源1
     @ConfigurationProperties(prefix = "spring.datasource.druid1")  //扫描配置文件
-    @Bean(name = "druidDataSource1", initMethod = "init", destroyMethod = "close")
+    @Bean(name = "druidDataSource1")
     public DataSource druidDataSource1() {
         return new DruidDataSource();
     }
 
     //创建数据源2
     @ConfigurationProperties(prefix = "spring.datasource.druid2")  //扫描配置文件
-    @Bean(name = "druidDataSource2", initMethod = "init", destroyMethod = "close")
+    @Bean(name = "druidDataSource2")
     public DataSource druidDataSource2() {
         return new DruidDataSource();
     }

@@ -25,9 +25,9 @@ jedis:
   pool:
     host: 47.107.157.20 #host
     password: 123456 #password
-    port: 6379 #port
+    #port: 6379 #port
     timeout: 5000 #timeout
-    db: 2 #db
+    # db: 0 #db
     max-active: 5000  # jedis最大活跃数目
     max-idle: 1000  # jedis最大保存idle状态对象数
     max-wait: 5000  # 最大等待时间

@@ -1,12 +1,10 @@
 package com.example.demopro.utils;
 
-import com.example.demopro.DemoproApplication;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-import java.net.URL;
 import java.util.Map;
 
 @Component
@@ -30,16 +28,16 @@ public class JedisPoolUtils {
             RedisUtils redisUtils = new RedisUtils();  //导入读取Yaml配置文件的类
             Map map = redisUtils.YamlReadJedisConfigFromResource(yaml_class_path);
 
-            host = (String) map.get("host");
-            port = (Integer) map.get("port");
+            host = map.get("host") == null ? "127.0.0.1" : (String) map.get("host");
+            port = map.get("port") == null ? 6379 : (Integer) map.get("port");
             password = String.valueOf(map.get("password"));
-            timeout = (Integer) map.get("timeout");
-            db = (Integer) map.get("db");
-            maxActive = (Integer) map.get("max-active");
-            maxIdle = (Integer) map.get("max-idle");
-            maxWait = (Integer) map.get("max-wait");
-            testOnBorrow = (boolean) map.get("testOnBorrow");
-            testOnReturn = (boolean) map.get("testOnReturn");
+            timeout = map.get("timeout") == null ? 5000 : (Integer) map.get("timeout");
+            db = map.get("db") == null ? 0 : (Integer) map.get("db");
+            maxActive = map.get("max-active") == null ? 5000 : (Integer) map.get("max-active");
+            maxIdle = map.get("max-active") == null ? 2000 : (Integer) map.get("max-idle");
+            maxWait = map.get("max-wait") == null ? 5000 : (Integer) map.get("max-wait");
+            testOnBorrow = map.get("testOnBorrow") == null ? true : (boolean) map.get("testOnBorrow");
+            testOnReturn = map.get("testOnReturn") == null ? true : (boolean) map.get("testOnReturn");
 
             jedisPoolConfig.setMaxIdle(maxIdle);
             jedisPoolConfig.setTestOnBorrow(testOnBorrow);
@@ -55,14 +53,15 @@ public class JedisPoolUtils {
 
     }
 
+    //获取Jedis连接
     public Jedis GetJedisConn() {  //获取Jedis连接
         return pool.getResource();
     }
 
+    //归还Jedis连接
     public void ReturnJedisConn(Jedis jedis) {  //归还连接
         pool.returnResourceObject(jedis);
     }
-
 
 }
 
