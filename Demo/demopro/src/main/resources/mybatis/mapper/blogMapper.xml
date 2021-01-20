@@ -12,14 +12,19 @@
     </resultMap>
 
     <select id="GetBlogById" resultMap="Blog">
-        select * from wann.blog where id = #{id};
+        select *
+        from wann.blog
+        where id = #{id};
     </select>
 
     <select id="GetBlogsByUserName" resultMap="Blog">
-        select * from wann.blog where username = #{username};
+        select *
+        from wann.blog
+        where username = #{username};
     </select>
 
     <insert id="AddBlog">
-        insert into wann.blog(username,content,publishTime,blog_title) values(#{username},#{content},#{publishTime},#{blog_title});
+        insert into wann.blog(username, content, publishTime, blog_title)
+        values (#{username}, #{content}, #{publishTime}, #{blog_title});
     </insert>
 </mapper>

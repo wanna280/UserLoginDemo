@@ -3,6 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.demopro.dao.UserRolesDao">
+
     <resultMap id="UserRoles" type="com.example.demopro.bean.UserRolesBean">
         <result column="id" property="id"></result>
         <result column="username" property="username"></result>
@@ -10,14 +11,19 @@
     </resultMap>
 
     <select id="GetUserRolesById" resultMap="UserRoles">
-        select * from wann.userRoles where id = #{id};
+        select *
+        from wann.userRoles
+        where id = #{id};
     </select>
 
     <select id="GetUserRolesByUserName" resultMap="UserRoles">
-        select * from wann.userRoles where username = #{username};
+        select *
+        from wann.userRoles
+        where username = #{username};
     </select>
 
     <insert id="InsertOneUserRole">
-        insert into wann.userRoles(username,roles) values(#{username},#{roles})
+        insert into wann.userRoles(username, roles)
+        values (#{username}, #{roles})
     </insert>
 </mapper>

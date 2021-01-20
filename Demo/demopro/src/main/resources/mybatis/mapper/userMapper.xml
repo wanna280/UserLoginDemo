@@ -10,18 +10,26 @@
     </resultMap>
 
     <select id="GetUserById" resultMap="User">
-        select * from wann.user where id = #{id};
+        select *
+        from wann.user
+        where id = #{id};
     </select>
 
     <select id="UserLogin" resultMap="User">
-        select * from wann.user where username = #{username} and password = #{password};
+        select *
+        from wann.user
+        where username = #{username}
+          and password = #{password};
     </select>
 
     <select id="GetUserByUserName" resultMap="User">
-        select * from wann.user where username = #{username}
+        select *
+        from wann.user
+        where username = #{username}
     </select>
 
     <insert id="InsertOneUser">
-        insert into wann.user(username,password) values(#{username},#{password})
+        insert into wann.user(username, password)
+        values (#{username}, #{password})
     </insert>
 </mapper>
