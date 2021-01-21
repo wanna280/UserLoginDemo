@@ -3,7 +3,6 @@ package com.example.demopro.service.Impl;
 import com.example.demopro.bean.BlogBean;
 import com.example.demopro.dao.BlogDao;
 import com.example.demopro.service.BlogService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,5 +28,21 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public void AddBlog(BlogBean blogBean) {
         blogDao.AddBlog(blogBean);
+    }
+
+    @Override
+    public ArrayList<BlogBean> GetAllBlogs(){
+        return blogDao.GetAllBlogs();
+    }
+
+    @Override
+    public boolean UpdateBlog(BlogBean blogBean){
+        try{
+            blogDao.UpdateBlog(blogBean);
+            return true;
+        }catch (Exception ex){
+            return false;
+        }
+
     }
 }

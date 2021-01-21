@@ -33,9 +33,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/captcha").permitAll() //允许访问验证码页面
                 .antMatchers("/login").permitAll()  //允许访问login页面
                 .antMatchers("/register").permitAll()  //允许任意访问register页面
-                .antMatchers("/test").hasAnyAuthority("user","admin")  //必须要有admin权限才能访问
+                .antMatchers("/test").hasAnyAuthority("user", "admin")  //必须要有admin权限才能访问
                 .antMatchers("/home").hasAnyAuthority("admin")  //登录之后可以访问home页面
-                .antMatchers("/blog").hasAnyAuthority("user","admin")  //允许访问
+                .antMatchers("/getCurrentUserName").permitAll()
+                .antMatchers("/blog").hasAnyAuthority("user", "admin")  //允许访问
                 .anyRequest().authenticated();
 
         http.formLogin()  //使用表单登录
@@ -77,9 +78,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         //从数据库中加载用户信息
         //SpringSecurity规定，用户密码必须进行加密
-        try{
+        try {
             auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
-        }catch (Exception ex){
+        } catch (Exception ex) {
 
         }
     }

@@ -5,6 +5,7 @@ import com.example.demopro.bean.UserRolesBean;
 import com.example.demopro.service.Impl.RedisServiceImpl;
 import com.example.demopro.service.Impl.UserRolesServiceImpl;
 import com.example.demopro.service.Impl.UserServiceImpl;
+import com.example.demopro.service.Impl.UserServiceNoRedisImpl;
 import com.example.demopro.utils.CaptchaUtils;
 import com.example.demopro.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,14 @@ public class UserLoginController {
     private UserRolesServiceImpl userRolesService;
     @Resource
     private RedisServiceImpl redisService;
+    @Resource
+    private UserServiceNoRedisImpl userServiceNoRedis;
 
     @RequestMapping("/login")   //前端请求登录的页面
     public String Login(UserBean userBean) {
         return "login.html";
     }
+
 
     @ResponseBody
     @RequestMapping("/success")  //用户成功登录，后端跳转到success页面
@@ -74,7 +78,7 @@ public class UserLoginController {
         Map<String, Object> map = new HashMap<>();
         UserBean userBean = new UserBean(0, username, passwd);  //创建用户的实体，后端数据库自增id，所以id不用管
         UserRolesBean userRolesBean = new UserRolesBean(0, username, roles);  //创建角色的实体，后端数据库自增id，所以id不用管
-        UserBean user_db = userService.GetUserByUserName(username);  //从后端数据库查询这个用户名的数据
+        UserBean user_db = userServiceNoRedis.GetUserByUserName(username);  //从后端数据库查询这个用户名的数据
         if (user_db == null) {  //如果不是空，数据库已经存在这个用户了
             boolean status1 = userService.InsertOneUser(userBean);  //插入用户表
             boolean status2 = userRolesService.InsertOneUserRole(userRolesBean); //插入角色表
@@ -103,7 +107,9 @@ public class UserLoginController {
     public Map<String, Object> Verify() {
         //前端每次请求页面之前请求这个接口判断是否登录成功，如果请求这个接口都失败了，说明没登录
         Map<String, Object> map = new HashMap<>();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         map.put("status", true);
+        map.put("username", username);
         map.put("msg", "认证成功");
         return map;
     }
@@ -131,6 +137,16 @@ public class UserLoginController {
             e.printStackTrace();
         }
         return map;  //return map
+    }
+
+    @ResponseBody
+    @RequestMapping("/getCurrentUserName")
+    public Map<String, Object> getCurrentUserName() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", username);
+        map.put("msg", true);
+        return map;
     }
 
 }

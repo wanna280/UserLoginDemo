@@ -13,6 +13,7 @@ import java.util.Map;
 
 @Component
 public class RedisUtils {
+
     public Map YamlReadJedisConfigFromResource(String path) {
         Yaml yaml = new Yaml();
         Map map = (Map) yaml.load(DemoproApplication.class.getResourceAsStream(path));
@@ -20,7 +21,7 @@ public class RedisUtils {
         return map2;
     }
 
-    public Map YamlReadJedisConfig(String path) throws FileNotFoundException {
+    public Map YamlReadJedisConfigFromFileSystem(String path) throws FileNotFoundException {
         Yaml yaml = new Yaml();  //创建yaml对象
         Map map = (Map) yaml.load(new FileInputStream(path));  //根据路径读取文件
         Map map2 = (Map) ((Map) map.get("jedis")).get("pool");  //得到配置文件

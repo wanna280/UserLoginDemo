@@ -2,7 +2,6 @@ package com.example.demopro.service.Impl;
 
 import com.example.demopro.bean.UserBean;
 import com.example.demopro.bean.UserRolesBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -18,7 +17,7 @@ import java.util.Collection;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
-    UserServiceImpl userService;
+    UserServiceNoRedisImpl userService;
 
     @Resource
     UserRolesServiceImpl userRolesService;

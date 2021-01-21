@@ -28,7 +28,7 @@ public class UserServiceImplProxy {
     // 定义环绕通知，新增从Redis查询的功能
     @Around("point_cut_getUserByUserName()")
     public UserBean Around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        String key = "user_roles_" + proceedingJoinPoint.getArgs()[0];
+        String key = "user_user_" + proceedingJoinPoint.getArgs()[0];
         String value;   //初始化value，用来保存从Redis中查询出来的字符串(后续转换成JSON）
         UserBean userBean;
 
@@ -44,6 +44,7 @@ public class UserServiceImplProxy {
             userBean = (UserBean) proceedingJoinPoint.proceed();
             //将对象的值存储到Redis缓存当中
             redisService.set(key, JSON.toJSONString(userBean));
+            redisService.setExpire(key,60 * 60);
         } else {
             //如果Redis缓存中已经有这个对象，就将其JSON转换为UserBean对象作为查询结果
             JSON json = (JSON) JSON.parse(value);

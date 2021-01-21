@@ -46,6 +46,7 @@ public class UserRolesServiceImplProxy {
             userRolesBean = (UserRolesBean) proceedingJoinPoint.proceed();
             //将对象的值存储到Redis缓存当中
             redisService.set(key, JSON.toJSONString(userRolesBean));
+            redisService.setExpire(key,60 * 60);
         } else {
             //如果Redis缓存中已经有这个对象，就将其JSON转换为UserBean对象作为查询结果
             JSON json = (JSON) JSON.parse(value);

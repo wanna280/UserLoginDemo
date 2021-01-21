@@ -11,6 +11,11 @@
         <result column="blog_title" property="blog_title"></result>
     </resultMap>
 
+    <select id="GetAllBlogs" resultMap="Blog">
+        select *
+        from wann.blog
+        where 1 = 1;
+    </select>
     <select id="GetBlogById" resultMap="Blog">
         select *
         from wann.blog
@@ -27,4 +32,13 @@
         insert into wann.blog(username, content, publishTime, blog_title)
         values (#{username}, #{content}, #{publishTime}, #{blog_title});
     </insert>
+
+    <update id="UpdateBlog">
+        update wann.blog
+        set blog_title=#{blog_title},
+            content = #{content},
+            publishTime=#{publishTime}
+        where id = #{id};
+    </update>
+
 </mapper>

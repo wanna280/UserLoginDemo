@@ -4,6 +4,8 @@ import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import request from "../network/request"
 
+import store from '../store/index'
+
 Vue.use(VueRouter)
 
 const Main = () => //主页面，显示博客主页面等信息
@@ -18,12 +20,15 @@ const WriteBlog = () => //写博客页面
 const BlogDetails = () => //博客详情页
     import ("../views/Blog/MyBlog_Details.vue")
 
+const EditBlog = () =>
+    import ("../views/Blog/MyBlog_Edit.vue") //编辑博客界面
+
 const routes = [{ //设置重定向路径为登录页面
         path: '/', //根路径直接重定向到/login
         redirect: '/login'
     },
     { //Home
-        path: '/',
+        path: '/home',
         name: 'Home',
         component: Home,
     },
@@ -51,7 +56,12 @@ const routes = [{ //设置重定向路径为登录页面
         path: '/blogdetails',
         name: 'BlogDetails',
         component: BlogDetails
-    }
+    },
+    { //编辑页面
+        path: '/editblog',
+        name: 'EditBlog',
+        component: EditBlog
+    },
 ]
 
 const router = new VueRouter({
@@ -77,6 +87,10 @@ router.beforeEach((to, from, next) => {
                 //console.log(res)
                 //如果后端返回的接口状态是true，则next
                 if (res.data.status == true) {
+                    store.commit({
+                        type: "SetUserName",
+                        username: res.data.username,
+                    })
                     next()
                 } else { //如果没有返回true，则回到登录页面
                     next("/login")

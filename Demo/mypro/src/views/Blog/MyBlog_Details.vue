@@ -1,15 +1,22 @@
 <template>
-  <div>
+  <div id="details_main">
     <div class="blog">
       <div>
-        <h2>UserName: {{ blog.username }}</h2>
+        <h1>{{ blog.blog_title }}</h1>
       </div>
-      <div>
-        <h3>publishTime: {{ blog.publishTime }}</h3>
+      <el-divider />
+      <div id="nav_blog">
+        <div id="nav_title">
+          <div>用户: {{ blog.username }}</div>
+          <div>发布日期：{{ blog.publishTime.substring(0, 10) }}</div>
+        </div>
+        <div id="nav_btn">
+          <div v-show="canBeEdited">
+            <el-button @click="ToEdit">编辑</el-button>
+          </div>
+        </div>
       </div>
-      <div>
-        <h3>Title: {{ blog.blog_title }}</h3>
-      </div>
+      <el-divider />
       <div>
         <article v-html="blog.content"></article>
       </div>
@@ -31,6 +38,7 @@ export default {
         content: "", //内容
         publishTime: "", //发布时间
       },
+      editBtn_Show: this.EditBtn_Show,
     };
   },
   created() {
@@ -63,6 +71,43 @@ export default {
         console.log(err);
       });
   },
-  methods: {},
+  methods: {
+    ToEdit() {
+      this.$router.push({
+        path: "/editblog",
+        query: {
+          blog_id: this.blog.id,
+        },
+      });
+    },
+  },
+  computed: {
+    //判断是否显示编辑按钮
+    canBeEdited: function () {
+      if (this.$store.state.username == this.blog.username) {
+        return true;
+      }
+      return false;
+    },
+  },
 };
 </script>
+
+<style>
+#details_main {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#nav_blog {
+  display: flex;
+}
+
+#nav_title {
+  margin-left: 0px;
+}
+
+#nav_btn {
+  margin-left: 500px;
+}
+</style>

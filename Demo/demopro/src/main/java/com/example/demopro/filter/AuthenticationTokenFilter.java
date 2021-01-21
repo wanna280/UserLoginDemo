@@ -60,7 +60,7 @@ public class AuthenticationTokenFilter implements Filter {
 
             //拦截/login和/register的请求，判断验证码,验证码正确则放行，否则，拦截
             if (request.getRequestURI().equals("/login") || request.getRequestURI().equals("/register")) {
-                System.out.println("Filter拦截的URI为" + request.getRequestURI());
+                //System.out.println("Filter拦截的URI为" + request.getRequestURI());
                 String captcha = request.getParameter("captcha");
                 String key_uuid = request.getParameter("uuid");
                 String captcha_s = redisService.get("capt_key_" + key_uuid);
@@ -93,7 +93,6 @@ public class AuthenticationTokenFilter implements Filter {
             String token = ((HttpServletRequest) servletRequest).getHeader("token");
 
             if (token != null && !(token.equals(""))) { //如果token不为空
-
                 try {   //如果认证成功，放行，如果认证失败，直接过滤掉？
                     Claims claims = JwtUtils.VerifyJwt(token);
                     String username = (String) claims.get("username");
