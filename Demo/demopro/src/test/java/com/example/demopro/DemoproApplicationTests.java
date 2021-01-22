@@ -45,4 +45,9 @@ class DemoproApplicationTests {
         redisService.flushdb();
     }
 
+    @Test
+    void TestA(){
+        System.out.println(redisService.get("aaa"));
+    }
+
 }

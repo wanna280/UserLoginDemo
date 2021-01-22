@@ -17,7 +17,7 @@ import java.util.Collection;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Resource
-    UserServiceNoRedisImpl userService;
+    UserServiceImpl userService;
 
     @Resource
     UserRolesServiceImpl userRolesService;

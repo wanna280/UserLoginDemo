@@ -44,9 +44,16 @@ public class UserRolesServiceImplProxy {
         if (value == null || value.equals("")) {  //必须先判断空再判断空字符串
             //从数据库查询这个对象
             userRolesBean = (UserRolesBean) proceedingJoinPoint.proceed();
-            //将对象的值存储到Redis缓存当中
-            redisService.set(key, JSON.toJSONString(userRolesBean));
-            redisService.setExpire(key,60 * 60);
+
+            //如果从数据库查询的内容为空，直接Return NULL，否则加入Redis中
+            if (userRolesBean != null) {
+                //将对象的值存储到Redis缓存当中
+                redisService.set(key, JSON.toJSONString(userRolesBean));
+                redisService.setExpire(key, 60 * 60);
+            } else {
+                return null;
+            }
+
         } else {
             //如果Redis缓存中已经有这个对象，就将其JSON转换为UserBean对象作为查询结果
             JSON json = (JSON) JSON.parse(value);

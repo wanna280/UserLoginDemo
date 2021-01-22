@@ -91,15 +91,19 @@ public class BlogServiceImplProxy {
         if (value == null || value.equals("")) {  //必须先判断空再判断空字符串
             //从数据库查询这个对象
             blogBean = (BlogBean) proceedingJoinPoint.proceed();
-            //将对象的值存储到Redis缓存当中
-            redisService.set(key, JSON.toJSONString(blogBean));
-            redisService.setExpire(key, 60 * 60);
-            System.out.println("从数据库中获取ById");
+
+            //如果数据库中查询的结果为空，Return NULL，否则加入Redis
+            if (blogBean != null) {
+                //将对象的值存储到Redis缓存当中
+                redisService.set(key, JSON.toJSONString(blogBean));
+                redisService.setExpire(key, 60 * 60);
+            } else {
+                return null;
+            }
         } else {
-            //如果Redis缓存中已经有这个对象，就将其JSON转换为UserBean对象作为查询结果
+            //如果Redis缓存中已经有这个对象，就将其JSON转换为BlogBean对象作为查询结果
             JSON json = (JSON) JSON.parse(value);
-            blogBean = JSON.toJavaObject(json, BlogBean.class);  //将JSON转换为UserBean对象
-            System.out.println("从Redis中获取ById");
+            blogBean = JSON.toJavaObject(json, BlogBean.class);  //将JSON转换为BlogBean对象
         }
 
         return blogBean;  //return
@@ -121,22 +125,26 @@ public class BlogServiceImplProxy {
         if (values == null || values.size() == 0) {
             //System.out.println("从数据库中查询");
             blogBeans = (ArrayList<BlogBean>) proceedingJoinPoint.proceed();
-            for (BlogBean blogBean :
-                    blogBeans) {
-                String json = JSON.toJSONString(blogBean);
-                redisService.lpush(key, json);
+
+            //如果从数据库中能查询到结果，就设入Redis，否则，Return NULL
+            if (blogBeans != null && blogBeans.size() != 0) {
+                for (BlogBean blogBean :
+                        blogBeans) {
+                    String json = JSON.toJSONString(blogBean);
+                    redisService.lpush(key, json);
+                }
+                redisService.setExpire(key, 60 * 60);
+            } else {
+                return null;
             }
-            redisService.setExpire(key, 60 * 60);
-            System.out.println("从数据库中获取GetAll");
+
         } else {//如果value不为空
-            //System.out.println("从Redis中查询");
             for (String item :
                     values) {
                 JSON json = (JSON) JSON.parse(item);
                 BlogBean blogBean = JSON.toJavaObject(json, BlogBean.class);
                 blogBeans.add(blogBean);
             }
-            System.out.println("从Redis中获取GetAll");
         }
 
         return blogBeans;
