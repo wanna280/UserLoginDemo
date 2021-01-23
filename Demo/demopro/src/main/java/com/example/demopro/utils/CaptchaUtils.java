@@ -13,13 +13,13 @@ import java.io.OutputStream;
 import java.util.Random;
 
 public class CaptchaUtils {
-    private int w = 100;	//设置图片宽度
-    private int h = 40;		//设置图片高度
-    private Color bgColor = new Color(255,255,255);		//设置图片背景
+    private int w = 100;    //设置图片宽度
+    private int h = 40;        //设置图片高度
+    private Color bgColor = new Color(255, 255, 255);        //设置图片背景
     Random random = new Random();
     StringBuilder sb = new StringBuilder();
 
-    private BufferedImage createImage(){
+    private BufferedImage createImage() {
         /*
          * 1.创建图片
          * 2.设置背景色
@@ -33,20 +33,22 @@ public class CaptchaUtils {
         return img;
     }
 
-    private Color randomColor(){
+    private Color randomColor() {
         int r = random.nextInt(256);
         int g = random.nextInt(256);
         int b = random.nextInt(256);
-        return new Color(r,g,b);
+        return new Color(r, g, b);
     }
 
     /**
      * 设置 字体、字号、样式
+     *
      * @return
      */
-    private String[] fontName = {"宋体","华文楷体","黑体","华文新魏","华文隶书","微软雅黑"};
-    private int[] fontSize = {28,32,35,39,45};
-    private Font randomFont(){
+    private String[] fontName = {"宋体", "华文楷体", "黑体", "华文新魏", "华文隶书", "微软雅黑"};
+    private int[] fontSize = {28, 32, 35, 39, 45};
+
+    private Font randomFont() {
         int index = random.nextInt(fontName.length);
         //根据随机索引获取字体名
         String name = fontName[index];
@@ -59,16 +61,17 @@ public class CaptchaUtils {
     }
 
     private String codes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRESTUVWXYZ0123456789";
-    private String randomChar(){
-        int index= random.nextInt(codes.length());
+
+    private String randomChar() {
+        int index = random.nextInt(codes.length());
         //返回随机字符
-        return codes.charAt(index)+"";
+        return codes.charAt(index) + "";
     }
 
-    private void drawLine (BufferedImage image) {
-        int num  = 3;
-        Graphics2D g2 = (Graphics2D)image.getGraphics();
-        for(int i = 0; i < num; i++) {
+    private void drawLine(BufferedImage image) {
+        int num = 3;
+        Graphics2D g2 = (Graphics2D) image.getGraphics();
+        for (int i = 0; i < num; i++) {
             int x1 = random.nextInt(w);
             int y1 = random.nextInt(h);
             int x2 = random.nextInt(w);
@@ -79,13 +82,13 @@ public class CaptchaUtils {
         }
     }
 
-    public BufferedImage getImage(){
+    public BufferedImage getImage() {
         /**
          * 写入字符（包括字符字体、颜色、字符种类）
          */
         BufferedImage img = this.createImage();
         Graphics g = img.getGraphics();
-        for(int i=0;i<4;i++){
+        for (int i = 0; i < 4; i++) {
             //设置字符
             String ch = this.randomChar();
             sb.append(ch);
@@ -94,23 +97,25 @@ public class CaptchaUtils {
             //设置画笔字体
             g.setFont(this.randomFont());
             //画出字符
-            g.drawString(ch, w/4*i, h-5);
+            g.drawString(ch, w / 4 * i, h - 5);
         }
         drawLine(img);
         return img;
     }
+
     //获取验证码的字符
-    public String getText(){
+    public String getText() {
         return sb.toString();
     }
 
-    public static void saveImage(BufferedImage img, OutputStream out)throws Exception{
+    public static void saveImage(BufferedImage img, OutputStream out) throws Exception {
         ImageIO.write(img, "jpeg", out);
     }
 
 
     /**
      * BufferedImage 编码转换为 base64
+     *
      * @param bufferedImage
      * @return
      */
@@ -131,10 +136,11 @@ public class CaptchaUtils {
 
     /**
      * base64 编码转换为 BufferedImage
+     *
      * @param base64
      * @return
      */
-    public   BufferedImage base64ToBufferedImage(String base64) {
+    public BufferedImage base64ToBufferedImage(String base64) {
         BASE64Decoder decoder = new sun.misc.BASE64Decoder();
         try {
             byte[] bytes1 = decoder.decodeBuffer(base64);

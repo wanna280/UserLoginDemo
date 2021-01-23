@@ -8,21 +8,6 @@ import store from '../store/index'
 
 Vue.use(VueRouter)
 
-const Main = () => //主页面，显示博客主页面等信息
-    import ('../views/Main.vue');
-
-const Register = () => //注册页面
-    import ("../views/Register.vue")
-
-const WriteBlog = () => //写博客页面
-    import ("../views/Blog/MyBlog_Write.vue")
-
-const BlogDetails = () => //博客详情页
-    import ("../views/Blog/MyBlog_Details.vue")
-
-const EditBlog = () =>
-    import ("../views/Blog/MyBlog_Edit.vue") //编辑博客界面
-
 const routes = [{ //设置重定向路径为登录页面
         path: '/', //根路径直接重定向到/login
         redirect: '/login'
@@ -40,28 +25,39 @@ const routes = [{ //设置重定向路径为登录页面
     { //main主页面
         path: '/main',
         name: 'Main',
-        component: Main
+        component: () => //主页面，显示博客主页面等信息
+            import ('../views/Main.vue')
     },
     { //注册页面
         path: "/register",
         name: 'Register',
-        component: Register
+        component: () => //注册页面
+            import ("../views/Register.vue")
     },
     { //写博客页面
         path: '/writeblog',
         name: 'WriteBlog',
-        component: WriteBlog
+        component: () => //写博客页面
+            import ("../views/Blog/MyBlog_Write.vue")
     },
     { //博客详情页面
         path: '/blogdetails',
         name: 'BlogDetails',
-        component: BlogDetails
+        component: () => //博客详情页
+            import ("../views/Blog/MyBlog_Details.vue")
     },
     { //编辑页面
         path: '/editblog',
         name: 'EditBlog',
-        component: EditBlog
+        component: () => //编辑博客界面
+            import ("../views/Blog/MyBlog_Edit.vue")
     },
+    {
+        path: '/myblogs',
+        name: 'MyBlogs',
+        component: () =>
+            import ("../views/Blog/MyBlogs.vue")
+    }
 ]
 
 const router = new VueRouter({

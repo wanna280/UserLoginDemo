@@ -94,9 +94,9 @@ export default {
           //响应成功处理的回调函数
           console.log(res);
           this.$store.commit({
-            type:"SetUserName",
-            username:this.LoginForm.username
-          })
+            type: "SetUserName",
+            username: this.LoginForm.username,
+          });
           this.token = res.data.token; //通过后端API返回的接口设置token的值
           localStorage.setItem("token", this.token); //设置本地的token为this.token
           if (res.data.status == true) {
@@ -139,7 +139,7 @@ export default {
         //请求失败打印失败信息
         console.log(err);
       });
-      console.log(this.$store.state.username)
+    console.log(this.$store.state.username);
   },
 };
 </script>

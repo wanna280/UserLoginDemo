@@ -14,9 +14,7 @@
           <el-menu-item index="2-1" @click="UploadLogo()"
             >个人资料</el-menu-item
           >
-          <el-menu-item index="2-2" @click="GetSelfBlog()"
-            >我的文章</el-menu-item
-          >
+          <el-menu-item index="2-2" @click="ToMain()">返回首页</el-menu-item>
           <el-menu-item index="2-3">退出</el-menu-item>
         </el-submenu>
       </el-menu>
@@ -39,7 +37,7 @@
 
 <script>
 import marked from "marked";
-import request from "../network/request";
+import request from "../../network/request";
 import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 export default {
@@ -72,8 +70,8 @@ export default {
         },
       });
     },
-    GetSelfBlog() {
-      this.$router.push("/myblogs");
+    ToMain() {
+      this.$router.push("/main");
     },
   },
   created() {
@@ -81,7 +79,7 @@ export default {
     this.token = localStorage.getItem("token");
     request({
       //访问后端的blog_all的api，展示页面中的博客信息
-      url: "/api/blog_all",
+      url: "/api/blog_all_self",
       method: "get",
       headers: {
         //在headers中传递token信息
@@ -90,6 +88,7 @@ export default {
     })
       .then((res) => {
         console.log(res);
+        this.BlogList = [];
         var bloglist = res.data; //得到博客的列表
         for (var i = 0; i < bloglist.length; i++) {
           this.BlogList.push(bloglist[i]);

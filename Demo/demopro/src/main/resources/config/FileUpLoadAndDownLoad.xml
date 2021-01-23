@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!--     最大上传大小为1024*1024B，即1MB    -->
+        <property name="maxUploadSize" value="1048576"/>
+        <!--     延时文件解析   -->
+        <property name="resolveLazily" value="true"/>
+        <!--     上传的临时路径   -->
+        <property name="uploadTempDir" value="file"/>
+        <!--     最大在内存中的地址，小于这个参数不会生成临时文件，默认为10240   -->
+        <property name="maxInMemorySize" value="40960"/>
+    </bean>
+</beans>

@@ -2,7 +2,6 @@ package com.example.demopro.config;
 
 import com.example.demopro.filter.AuthenticationTokenFilter;
 import com.example.demopro.service.Impl.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,8 +34,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register").permitAll()  //允许任意访问register页面
                 .antMatchers("/test").hasAnyAuthority("user", "admin")  //必须要有admin权限才能访问
                 .antMatchers("/home").hasAnyAuthority("admin")  //登录之后可以访问home页面
-                .antMatchers("/getCurrentUserName").permitAll()
+                .antMatchers("/getCurrentUserName").permitAll()  //允许访问这个api获取当前用户名？
                 .antMatchers("/blog").hasAnyAuthority("user", "admin")  //允许访问
+                .antMatchers("/file/**").hasAnyAuthority("user","admin")
                 .anyRequest().authenticated();
 
         http.formLogin()  //使用表单登录

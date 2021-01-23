@@ -89,6 +89,7 @@ public class AuthenticationTokenFilter implements Filter {
 
             }
 
+
             //获取Http请求中的Header中的token部分的内容
             String token = ((HttpServletRequest) servletRequest).getHeader("token");
 

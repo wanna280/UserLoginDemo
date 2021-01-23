@@ -13,4 +13,5 @@
 
     <!--  导入SqlSessionFactoryBean  -->
     <import resource="classpath:config/SqlSessionFactoryBeanConfig.xml"/>
+    <import resource="classpath:config/FileUpLoadAndDownLoad.xml"/>
 </beans>
