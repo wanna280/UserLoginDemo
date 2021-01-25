@@ -4,9 +4,9 @@
 
 <mapper namespace="com.example.demopro.dao.UserDao">
     <resultMap id="User" type="com.example.demopro.bean.UserBean">
-        <result column="id" property="id"></result>
-        <result column="username" property="username"></result>
-        <result column="password" property="password"></result>
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
     </resultMap>
 
     <select id="GetUserById" resultMap="User">

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="upload_main">
     <el-upload
       :limit="1"
       class="upload-demo"
@@ -20,7 +20,7 @@
         >上传到服务器</el-button
       >
       <div slot="tip" class="el-upload__tip">
-        只能上传jpg/png文件，且不超过500kb
+        只能上传jpg/png文件，且不超过1MB
       </div>
     </el-upload>
     <img :src="logo_src" />
@@ -50,7 +50,14 @@ export default {
         data: file_form,
       })
         .then((res) => {
+          if (res.data.status == true) {
+            //如果后端返回了true，表明文件上传成功，否则文件上传失败
+            alert("上传文件成功");
+          } else {
+            alert("上传文件失败，原因是" + res.data.reason);
+          }
           console.log(res);
+          this.$router.push("/setting");
         })
         .catch((err) => {
           console.log(err);
@@ -69,3 +76,11 @@ export default {
   created() {},
 };
 </script>
+
+<style>
+#upload_main {
+  margin-top: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>

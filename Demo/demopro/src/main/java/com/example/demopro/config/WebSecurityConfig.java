@@ -37,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/getCurrentUserName").permitAll()  //允许访问这个api获取当前用户名？
                 .antMatchers("/blog").hasAnyAuthority("user", "admin")  //允许访问
                 .antMatchers("/file/**").hasAnyAuthority("user","admin")
+                .antMatchers("/logoItems/**").permitAll()  //允许任何人访问
                 .anyRequest().authenticated();
 
         http.formLogin()  //使用表单登录

@@ -41,12 +41,12 @@ class DemoproApplicationTests {
     }
 
     @Test
-    void TestFlushDb(){
+    void TestFlushDb() {
         redisService.flushdb();
     }
 
     @Test
-    void TestA(){
+    void TestA() {
         System.out.println(redisService.get("aaa"));
     }
 

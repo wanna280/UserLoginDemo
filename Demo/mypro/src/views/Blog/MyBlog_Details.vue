@@ -20,6 +20,8 @@
       <div>
         <article v-html="blog.content"></article>
       </div>
+      <el-divider />
+      <logo-items :blog_id="blog.id"></logo-items>
     </div>
   </div>
 </template>
@@ -28,7 +30,9 @@ import marked from "marked";
 import request from "../../network/request";
 import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
+import LogoItems from "../../components/logo_items/LogoItems.vue";
 export default {
+  components: { LogoItems },
   data() {
     return {
       blog: {
@@ -38,11 +42,12 @@ export default {
         content: "", //内容
         publishTime: "", //发布时间
       },
-      editBtn_Show: this.EditBtn_Show,
+      editBtn_Show: this.EditBtn_Show, //是否显示编辑按钮
     };
   },
   created() {
-    this.blog.id = this.$route.query.blog_id;
+    //转换成为int
+    this.blog.id = parseInt(this.$route.query.blog_id);
     request({
       //根据id显示具体博客的详细信息
       url: "/api/blog",

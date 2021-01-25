@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
-import Home from '../views/Home.vue'
+import Upload from '../views/Upload.vue'
 import request from "../network/request"
 
 import store from '../store/index'
@@ -13,14 +13,20 @@ const routes = [{ //设置重定向路径为登录页面
         redirect: '/login'
     },
     { //Home
-        path: '/home',
-        name: 'Home',
-        component: Home,
+        path: '/upload',
+        name: 'Upload',
+        component: Upload,
     },
     { //登录页面
         path: '/login',
         name: 'Login',
         component: Login
+    },
+    { //用户资料设置界面
+        path: '/setting',
+        name: 'Setting',
+        component: () =>
+            import ("../views/Blog/Setting.vue")
     },
     { //main主页面
         path: '/main',
@@ -87,7 +93,6 @@ router.beforeEach((to, from, next) => {
                         type: "SetUserName",
                         username: res.data.username,
                     })
-                    next()
                 } else { //如果没有返回true，则回到登录页面
                     next("/login")
                 }

@@ -5,9 +5,9 @@
 <mapper namespace="com.example.demopro.dao.UserRolesDao">
 
     <resultMap id="UserRoles" type="com.example.demopro.bean.UserRolesBean">
-        <result column="id" property="id"></result>
-        <result column="username" property="username"></result>
-        <result column="roles" property="roles"></result>
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="roles" property="roles"/>
     </resultMap>
 
     <select id="GetUserRolesById" resultMap="UserRoles">

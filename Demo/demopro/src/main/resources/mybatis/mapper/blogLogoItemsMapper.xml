@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demopro.dao.BlogLogoItemsDao">
+    <resultMap id="BlogItems" type="com.example.demopro.bean.BlogLogoItemsBean">
+        <result column="id" property="id"/>
+        <result column="watching_numbers" property="watching_numbers"/>
+        <result column="comment_numbers" property="comment_numbers"/>
+        <result column="thumbsup_numbers" property="thumbsup_numbers"/>
+    </resultMap>
+
+    <select id="GetBlogItems" resultMap="BlogItems">
+        select *
+        from wann.logo_items
+        where id = #{id};
+    </select>
+
+    <update id="DecreasingCommentNumbers">
+        update wann.logo_items
+        set comment_numbers = comment_numbers - 1
+        where id = #{id};
+    </update>
+
+    <update id="IncreasingCommentNumbers">
+        update wann.logo_items
+        set comment_numbers = comment_numbers + 1
+        where id = #{id};
+    </update>
+
+    <update id="DecreasingThumbsUpNumbers">
+        update wann.logo_items
+        set thumbsup_numbers = thumbsup_numbers - 1
+        where id = #{id};
+    </update>
+
+    <update id="IncreasingThumbsUpNumbers">
+        update wann.logo_items
+        set thumbsup_numbers = thumbsup_numbers + 1
+        where id = #{id};
+    </update>
+
+    <update id="DecreasingWatchingNumbers">
+        update wann.logo_items
+        set watching_numbers = watching_numbers - 1
+        where id = #{id};
+    </update>
+
+    <update id="IncreasingWatchingNumbers">
+        update wann.logo_items
+        set watching_numbers = watching_numbers + 1
+        where id = #{id};
+    </update>
+
+</mapper>

@@ -11,11 +11,9 @@
               width="40px"
               style="border-radius: 50%"
           /></template>
-          <el-menu-item index="2-1" @click="UploadLogo()"
-            >个人资料</el-menu-item
-          >
+          <el-menu-item index="2-1" @click="ToSetting()">关于设置</el-menu-item>
           <el-menu-item index="2-2" @click="ToMain()">返回首页</el-menu-item>
-          <el-menu-item index="2-3">退出</el-menu-item>
+          <el-menu-item index="2-3">退出登录</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
@@ -28,9 +26,12 @@
             style="cursor: pointer"
           ></div
         ></el-header>
-        <el-main><div v-html="blog.content"></div></el-main>
+        <el-main>
+          <div v-html="blog.content.substring(0, 200)"></div>
+        </el-main>
+        <logo-items :blog_id="blog.id"></logo-items>
+        <el-divider />
       </el-container>
-      <el-divider />
     </div>
   </div>
 </template>
@@ -40,10 +41,12 @@ import marked from "marked";
 import request from "../../network/request";
 import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
+import LogoItems from "../../components/logo_items/LogoItems.vue";
 export default {
   components: {
     //注册组件
     mavonEditor,
+    LogoItems,
   },
   data() {
     return {
@@ -53,8 +56,8 @@ export default {
     };
   },
   methods: {
-    UploadLogo() {
-      this.$router.push("/home");
+    ToSetting() {
+      this.$router.push("/setting");
     },
     WriteBlog() {
       //跳转到写博客界面
@@ -140,7 +143,7 @@ export default {
 }
 
 .el-main {
-  background-color: #eee;
+  /*background-color: #eee;*/
   color: #333;
   text-align: left;
   /*line-height: 160px;*/

@@ -1,17 +1,17 @@
 package com.example.demopro.controller.Upload;
 
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,9 +19,9 @@ import java.util.Map;
 @RestController
 public class UploadController {
     //本机的文件路径
-    //String pathname = "/Users/wanna/Desktop/blog/UserLoginDemo/Demo/demopro/src/main/resources/file/logo";
+    String pathname = "/Users/wanna/Desktop/blog/UserLoginDemo/Demo/demopro/src/main/resources/file/logo";
     //服务器的文件路径
-    String pathname = "/java/file/logo";
+    //String pathname = "/java/file/logo";
 
     @RequestMapping(value = "/file/getlogo", method = RequestMethod.GET)
     public void GetLogo(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -56,7 +56,6 @@ public class UploadController {
                 file_server.getParentFile().mkdirs();
                 System.out.println("创建目录" + file);
             } else {  //如果父文件夹已经存在
-
 
             }
             if (file_server.exists()) {

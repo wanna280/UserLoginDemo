@@ -4,11 +4,11 @@
 
 <mapper namespace="com.example.demopro.dao.BlogDao">
     <resultMap id="Blog" type="com.example.demopro.bean.BlogBean">
-        <result column="id" property="id"></result>
-        <result column="username" property="username"></result>
-        <result column="content" property="content"></result>
-        <result column="publishTime" property="publishTime"></result>
-        <result column="blog_title" property="blog_title"></result>
+        <result column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="content" property="content"/>
+        <result column="publishTime" property="publishTime"/>
+        <result column="blog_title" property="blog_title"/>
     </resultMap>
 
     <select id="GetAllBlogs" resultMap="Blog">
