@@ -68,20 +68,28 @@ public class BlogLogoItemsController {
 
 
     @RequestMapping(value = "/logoItems/thumbsup/isthumbsup/{id}")
-    public Map<String, Object> ThumbsUp(@PathVariable int id) {
+    public Map<String, Object> isThumbsUp(@PathVariable int id) {
         Map<String, Object> map = new HashMap<>();
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         String key = "isthumbsup_" + username + "_" + id;  //生成key
         String value = redisService.get(key);
-        //如果Redis中的查询结果为空，就return false，表示还能继续点赞
-        //如果Redis中查询结果不为空，就return true，表示不能继续点赞
-        if (value == null || value.equals("")) {  //如果Redis缓存中为空值，可以继续点赞
-            redisService.set(key, "yes", 60 * 60 * 24); //key有效期为1天
+        //如果Redis中有，那么返回true，否则返回false
+        if (value == null || value.equals("")) {
             map.put("status", false);
-        } else {  //已经点过赞了
-            redisService.set(key, "yes", 60 * 60 * 24); //key有效期为1天
+        } else {
             map.put("status", true);
         }
+        return map;
+    }
+
+    @RequestMapping(value = "/logoItems/thumbsup/thumbsup/{id}")
+    public Map<String, Object> ThumbsUp(@PathVariable int id) {
+        Map<String, Object> map = new HashMap<>();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String key = "isthumbsup_" + username + "_" + id;  //生成key
+        blogLogoItemsService.IncreasingThumbsUpNumbers(id);
+        redisService.set(key, "yes", 60 * 60 * 24); //key有效期为1day
+        map.put("status", true);
         return map;
     }
 

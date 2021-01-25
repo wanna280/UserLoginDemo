@@ -4,7 +4,7 @@
       <img src="../../assets/icon/comment.svg" width="20px" />
       <div style="width: 40px">{{ comment_numbers }}</div>
     </div>
-    <div v-if="thumbsup_status" @click="ThumbsUp">
+    <div v-if="thumbsup_status" @click="ThumbsDown">
       <img src="../../assets/icon/thumbsup_true.svg" width="20px" />
       <div style="width: 40px">{{ thumbsup_numbers }}</div>
     </div>
@@ -24,70 +24,36 @@ import request from "../../network/request";
 export default {
   name: "LogoItems",
   props: {
-    blog_id: Number,
+    blog_id: Number, //属性是blog_id，Number类型的
   },
   data() {
     return {
       blog_Id: 0,
+      //false显示白色logo，true显示黑色logo
       thumbsup_status: false,
       comment_numbers: 0,
       thumbsup_numbers: 0,
       watching_numbers: 0,
-      //true表示不能继续点赞，false表示还能继续点赞
-      is_thumbsup: true,
     };
   },
   methods: {
+    //当点赞是黑色logo时
+    ThumbsDown() {
+      alert("您今天已经点过赞了~请明天再来~");
+    },
+    //当点赞是白色logo时
     ThumbsUp() {
-      //如果后端返回true，就不能继续点赞了
-      //如果后端返回false，就能继续点赞
+      //点赞数+1，那么后端Redis就必须新增一个key
+      this.thumbsup_numbers += 1;
       request({
-        url: "/api/logoItems/thumbsup/isthumbsup/" + this.blog_Id,
-        method: "GET",
+        url: "/api/logoItems/thumbsup/thumbsup/" + this.blog_Id,
         headers: {
           token: localStorage.getItem("token"),
         },
       })
         .then((res) => {
-          this.is_thumbsup = res.data.status;
-          if (this.is_thumbsup == false) {
-            if (this.thumbsup_status == true) {
-              this.thumbsup_numbers -= 1;
-              request({
-                url: "/api/logoItems/thumbsup/decreasing/" + this.blog_Id,
-                headers: {
-                  token: localStorage.getItem("token"),
-                },
-              })
-                .then((res) => {
-                  console.log(res);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-              //提交给后台
-            } else {
-              request({
-                url: "/api/logoItems/thumbsup/increasing/" + this.blog_Id,
-                headers: {
-                  token: localStorage.getItem("token"),
-                },
-              })
-                .then((res) => {
-                  console.log(res);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-              //提交给后台
-            }
-            //点赞状态取反
-            this.thumbsup_status = !this.thumbsup_status;
-          } else {
-            this.thumbsup_status = false;
-            alert("当天已经点过赞了！");
-          }
           //console.log(res);
+          this.thumbsup_status = !this.thumbsup_status;
         })
         .catch((err) => {
           console.log(err);
@@ -109,6 +75,21 @@ export default {
         this.comment_numbers = res.data.comment_numbers;
         this.thumbsup_numbers = res.data.thumbsup_numbers;
         this.watching_numbers = res.data.watching_numbers;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    request({
+      url: "/api/logoItems/thumbsup/isthumbsup/" + this.blog_Id,
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        //Redis中有，就把赞logo设为黑色的
+        //Redis中没有，就把赞logo设为白色的
+        this.thumbsup_status = res.data.status;
       })
       .catch((err) => {
         console.log(err);
