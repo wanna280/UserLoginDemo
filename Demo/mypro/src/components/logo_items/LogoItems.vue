@@ -47,9 +47,6 @@ export default {
       this.thumbsup_numbers += 1;
       request({
         url: "/api/logoItems/thumbsup/thumbsup/" + this.blog_Id,
-        headers: {
-          token: localStorage.getItem("token"),
-        },
       })
         .then((res) => {
           //console.log(res);
@@ -59,41 +56,40 @@ export default {
           console.log(err);
         });
     },
+    GetLogoItems() {
+      this.blog_Id = this.$props.blog_id;
+      request({
+        url: "/api/logoItems/get/" + this.blog_Id,
+        method: "GET",
+      })
+        .then((res) => {
+          //console.log(res);
+          this.comment_numbers = res.data.comment_numbers;
+          this.thumbsup_numbers = res.data.thumbsup_numbers;
+          this.watching_numbers = res.data.watching_numbers;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    isThumbsUp() {
+      request({
+        url: "/api/logoItems/thumbsup/isthumbsup/" + this.blog_Id,
+      })
+        .then((res) => {
+          //Redis中有，就把赞logo设为黑色的
+          //Redis中没有，就把赞logo设为白色的
+          this.thumbsup_status = res.data.status;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   // 生命周期 - 创建完成
   created() {
-    this.blog_Id = this.$props.blog_id;
-    request({
-      url: "/api/logoItems/get/" + this.blog_Id,
-      method: "GET",
-      headers: {
-        token: localStorage.getItem("token"),
-      },
-    })
-      .then((res) => {
-        //console.log(res);
-        this.comment_numbers = res.data.comment_numbers;
-        this.thumbsup_numbers = res.data.thumbsup_numbers;
-        this.watching_numbers = res.data.watching_numbers;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    request({
-      url: "/api/logoItems/thumbsup/isthumbsup/" + this.blog_Id,
-      headers: {
-        token: localStorage.getItem("token"),
-      },
-    })
-      .then((res) => {
-        //Redis中有，就把赞logo设为黑色的
-        //Redis中没有，就把赞logo设为白色的
-        this.thumbsup_status = res.data.status;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.isThumbsUp(); //判断是否点赞
+    this.GetLogoItems(); //获取赞、观看、评论数量
   },
 
   // DOM挂载完毕

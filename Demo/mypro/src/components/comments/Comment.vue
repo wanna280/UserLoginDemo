@@ -43,23 +43,24 @@ export default {
       blog_comment_List: [],
     };
   },
-  methods: {},
+  methods: {
+    GetComments() {
+      request({
+        url: "/api/blog/comments/" + this.$props.blog_id,
+        method: "GET",
+      })
+        .then((res) => {
+          this.blog_comment_List = res.data.data;
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
   // 生命周期 - 创建完成
   created() {
-    request({
-      url: "/api/blog/comments/" + this.$props.blog_id,
-      method: "GET",
-      headers: {
-        token: localStorage.getItem("token"),
-      },
-    })
-      .then((res) => {
-        this.blog_comment_List = res.data.data;
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.GetComments(); //获取评论
   },
 
   // DOM挂载完毕

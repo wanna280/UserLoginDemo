@@ -53,9 +53,6 @@ export default {
           "/" +
           this.comment.content,
         method: "GET",
-        headers: {
-          token: localStorage.getItem("token"),
-        },
       })
         .then((res) => {
           //后端返回状态200表示发送成功，不然表示发送失败并给出失败原因
@@ -70,8 +67,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-      //   console.log(this.comment.content);
-      //   console.log(this.$props.blog_id);
     },
   },
   // 生命周期 - 创建完成
