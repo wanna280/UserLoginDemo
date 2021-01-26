@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 
+//阿里德鲁伊连接池
 @Component
 public class DataSourceConfig {
     //创建数据源1

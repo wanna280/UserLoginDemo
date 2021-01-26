@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
+//设置点赞、评论、观看的数量的增减
 @RestController
 public class BlogLogoItemsController {
     @Resource
@@ -26,6 +27,12 @@ public class BlogLogoItemsController {
         return blogLogoItemsService.GetBlogItems(id);
     }
 
+    /**
+     * 评论数-1
+     *
+     * @param id 博客Id
+     * @return
+     */
     @RequestMapping(value = "/logoItems/comments/decreasing/{id}")
     public Map<String, Object> SubCommentNumbers(@PathVariable int id) {
         Map<String, Object> map = new HashMap<>();
@@ -36,6 +43,12 @@ public class BlogLogoItemsController {
         return map;
     }
 
+    /**
+     * 评论数+1
+     *
+     * @param id 博客Id
+     * @return
+     */
     @RequestMapping(value = "/logoItems/comments/increasing/{id}")
     public Map<String, Object> AddCommentNumbers(@PathVariable int id) {
         Map<String, Object> map = new HashMap<>();
@@ -46,6 +59,12 @@ public class BlogLogoItemsController {
         return map;
     }
 
+    /**
+     * 点赞数-1
+     *
+     * @param id 博客Id
+     * @return
+     */
     @RequestMapping(value = "/logoItems/thumbsup/decreasing/{id}")
     public Map<String, Object> SubThumbsUpNumbers(@PathVariable int id) {
         Map<String, Object> map = new HashMap<>();
@@ -56,6 +75,12 @@ public class BlogLogoItemsController {
         return map;
     }
 
+    /**
+     * 点赞数+1
+     *
+     * @param id 博客Id
+     * @return
+     */
     @RequestMapping(value = "/logoItems/thumbsup/increasing/{id}")
     public Map<String, Object> AddThumbsUpNumbers(@PathVariable int id) {
         Map<String, Object> map = new HashMap<>();
@@ -67,6 +92,12 @@ public class BlogLogoItemsController {
     }
 
 
+    /**
+     * 查询是否点赞，前端以此判断用户是否点赞，一天之内只能点击一次（redis的key有效期为86400s）
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/logoItems/thumbsup/isthumbsup/{id}")
     public Map<String, Object> isThumbsUp(@PathVariable int id) {
         Map<String, Object> map = new HashMap<>();
@@ -82,6 +113,12 @@ public class BlogLogoItemsController {
         return map;
     }
 
+    /**
+     * 点赞数+1，设置redis中的key有效期是1day
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/logoItems/thumbsup/thumbsup/{id}")
     public Map<String, Object> ThumbsUp(@PathVariable int id) {
         Map<String, Object> map = new HashMap<>();
@@ -93,6 +130,12 @@ public class BlogLogoItemsController {
         return map;
     }
 
+    /**
+     * 博客的阅读数量-1
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/logoItems/watchings/decreasing/{id}")
     public Map<String, Object> SubWatchingNumbers(@PathVariable int id) {
         Map<String, Object> map = new HashMap<>();
@@ -103,6 +146,12 @@ public class BlogLogoItemsController {
         return map;
     }
 
+    /**
+     * 博客的阅读数量-1
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/logoItems/watchings/increasing/{id}")
     public Map<String, Object> AddWatchingNumbers(@PathVariable int id) {
         Map<String, Object> map = new HashMap<>();

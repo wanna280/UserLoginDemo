@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.*;
 
 import java.util.List;
 
+//配置跨域请求
 @Configuration
 public class WebCROSConfig implements WebMvcConfigurer {
     @Override

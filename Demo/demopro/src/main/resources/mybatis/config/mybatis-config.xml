@@ -11,5 +11,6 @@
         <mapper resource="mybatis/mapper/blogMapper.xml"/>
         <mapper resource="mybatis/mapper/userRolesMapper.xml"/>
         <mapper resource="mybatis/mapper/blogLogoItemsMapper.xml"/>
+        <mapper resource="mybatis/mapper/blogCommentMapper.xml"/>
     </mappers>
 </configuration>

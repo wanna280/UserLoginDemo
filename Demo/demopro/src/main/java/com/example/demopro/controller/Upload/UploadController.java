@@ -23,6 +23,13 @@ public class UploadController {
     //服务器的文件路径
     //String pathname = "/java/file/logo";
 
+    /**
+     * 获取登录的用户名的头像（logo）
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping(value = "/file/getlogo", method = RequestMethod.GET)
     public void GetLogo(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //获取用户输入的用户名
@@ -44,6 +51,13 @@ public class UploadController {
         out.close();
     }
 
+    /**
+     * 上传用户的头像，接收前端传递过来的file文件
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/file/upload/logo", method = RequestMethod.POST)
     public Map<String, Object> upload(MultipartFile file) throws IOException {
         Map<String, Object> map = new HashMap<>();

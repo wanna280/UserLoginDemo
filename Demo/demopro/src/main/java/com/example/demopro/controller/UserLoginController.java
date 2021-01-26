@@ -65,6 +65,13 @@ public class UserLoginController {
         return map;  //返回响应的字典
     }
 
+    /**
+     * 用户注册，传递的参数为用户名和密码
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/register")  //用户注册接口，前端的注册页面提交的表单，这里写入数据库
     public Map<String, Object> Register(String username, String password) {
@@ -97,6 +104,11 @@ public class UserLoginController {
 
     }
 
+    /**
+     * 验证用户是否已经登录了，如果已经登录了就可以向前端返回true表示用户已经登录
+     *
+     * @return resultMap
+     */
     @ResponseBody
     @RequestMapping("/verify")
     public Map<String, Object> Verify() {

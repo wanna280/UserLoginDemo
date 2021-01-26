@@ -7,6 +7,7 @@
 
 <style>
 @import url("./assets/css/reset.css");
+@import url("./assets/css/main.css");
 #nav {
   height: 100%;
   width: 100%;

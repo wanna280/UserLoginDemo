@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 
+//错误页面定制，包括400，403，404，500
 @Configuration
 public class ErrorPageConfig {
     @Bean

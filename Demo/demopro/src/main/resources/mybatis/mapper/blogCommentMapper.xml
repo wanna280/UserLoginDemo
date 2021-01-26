@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demopro.dao.BlogCommentDao">
+    <resultMap id="BlogComment" type="com.example.demopro.bean.CommentBean">
+        <result column="id" property="id"/>
+        <result column="blog_id" property="blog_id"/>
+        <result column="username" property="username"/>
+        <result column="publishTime" property="publishTime"/>
+        <result column="content" property="content"/>
+    </resultMap>
+
+    <select id="GetCommentById" resultMap="BlogComment">
+        select *
+        from wann.blog_comment
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <select id="GetCommentsByBlogId" resultMap="BlogComment">
+        select *
+        from wann.blog_comment
+        <where>
+            blog_id = #{blog_id}
+        </where>
+    </select>
+    <update id="AddCommentToBlog">
+        insert into wann.blog_comment(id, blog_id, username, publishTime, content)
+        values (#{id}, #{blog_id}, #{username}, #{publishTime}, #{content});
+    </update>
+
+    <delete id="DeleteCommentById">
+        delete from wann.blog_comment
+        <where>
+            id=#{id}
+        </where>
+    </delete>
+
+    <update id="UpdateComment">
+        update wann.blog_comment
+        set publishTime=#{publishTime},
+        content=#{content})
+        <where>
+            id = #{id}
+        </where>
+        and
+        <where>
+            blog_id = #{blog_id}
+        </where>
+        and
+        <where>
+            username = #{username}
+        </where>
+    </update>
+
+</mapper>

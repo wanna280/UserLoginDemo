@@ -67,7 +67,7 @@ export default {
     },
     ToDetails(blog_id) {
       //根据传递的参数查询后端数据库
-      console.log(blog_id);
+      //console.log(blog_id);
       this.$router.push({
         path: "blogdetails",
         query: {
@@ -137,17 +137,15 @@ export default {
 }
 
 .el-header {
-  background-color: #eeffee;
+  background-color: #eee;
   color: #333;
   text-align: left;
   line-height: 60px;
 }
 
 .el-main {
-  /*background-color: #eee;*/
   color: #333;
   text-align: left;
-  /*line-height: 160px;*/
 }
 
 .blog > .el-container {

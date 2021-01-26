@@ -11,7 +11,8 @@
           <div>发布日期：{{ blog.publishTime.substring(0, 10) }}</div>
         </div>
         <div id="nav_btn">
-          <div v-show="canBeEdited">
+          <div v-show="canBeEdited" class="nav_btn_self">
+            <el-button @click="ToDelete">删除</el-button>
             <el-button @click="ToEdit">编辑</el-button>
           </div>
         </div>
@@ -22,17 +23,19 @@
       </div>
       <el-divider />
       <logo-items :blog_id="blog.id"></logo-items>
+      <comment-text-area :blog_id="blog.id"></comment-text-area>
+      <comment :blog_id="blog.id"></comment>
     </div>
   </div>
 </template>
 <script>
 import marked from "marked";
 import request from "../../network/request";
-import { mavonEditor } from "mavon-editor";
-import "mavon-editor/dist/css/index.css";
 import LogoItems from "../../components/logo_items/LogoItems.vue";
+import Comment from "../../components/comments/Comment.vue";
+import CommentTextArea from "../../components/comments/Comment-TextArea.vue";
 export default {
-  components: { LogoItems },
+  components: { LogoItems, Comment, CommentTextArea },
   data() {
     return {
       blog: {
@@ -49,6 +52,19 @@ export default {
     //转换成为int
     this.blog.id = parseInt(this.$route.query.blog_id);
     request({
+      url: "/api/logoItems/watchings/increasing/" + this.blog.id,
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    request({
       //根据id显示具体博客的详细信息
       url: "/api/blog",
       method: "GET",
@@ -62,7 +78,7 @@ export default {
       },
     })
       .then((res) => {
-        console.log(res);
+        //console.log(res);
         this.blog.username = res.data.username;
         this.blog.blog_title = res.data.blog_title;
 
@@ -95,6 +111,7 @@ export default {
       return false;
     },
   },
+  mounted() {},
 };
 </script>
 
@@ -113,6 +130,6 @@ export default {
 }
 
 #nav_btn {
-  margin-left: 500px;
+  margin-left: 400px;
 }
 </style>

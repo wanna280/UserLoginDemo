@@ -16,15 +16,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+//博客的Controller
 @RestController
 public class BlogController {
     @Resource
     BlogServiceImpl blogService;
-
     @Resource
     RedisServiceImpl redisService;
 
-    //使用Restful风格
+    /**
+     * 添加博客，使用POST请求
+     *
+     * @param content    博客的内容
+     * @param blog_title 博客的标题
+     * @return resultMap
+     */
     @RequestMapping(value = "/blog", method = RequestMethod.POST) //POST方式请求
     public Map<String, Object> addBlog(String content, String blog_title) {
         //上下文中的用户名
@@ -63,6 +69,11 @@ public class BlogController {
 
     }
 
+    /**
+     * 查询当前登录用户的所有博客，用于在myblogs页面中显示
+     *
+     * @return
+     */
     @RequestMapping(value = "/blog_all_self", method = RequestMethod.GET) //Get方式请求
     public ArrayList<BlogBean> queryAll_Self() {  //根据用户名查询当前用户所写的全部的博客信息
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -70,17 +81,36 @@ public class BlogController {
         return blogs;
     }
 
+    /**
+     * 通过博客的Id查询数据库，GET请求，用于从主页或者个人页中跳转到details页
+     *
+     * @param blog_id
+     * @return
+     */
     @RequestMapping(value = "/blog", method = RequestMethod.GET)
     public BlogBean queryById(int blog_id) {  //给定id去查询，比如用在博客的跳转到详情的页面
         BlogBean blogBean = blogService.GetBlogById(blog_id);
         return blogBean;
     }
 
+    /**
+     * 查询所有博客，用于在主页中显示，GET请求
+     *
+     * @return
+     */
     @RequestMapping(value = "/blog_all", method = RequestMethod.GET)
     public ArrayList<BlogBean> queryAll() {
         return blogService.GetAllBlogs();
     }
 
+    /**
+     * 编辑博客，使用PUT请求
+     *
+     * @param blog_id    博客Id
+     * @param content    博客的内容
+     * @param blog_title 博客的标题
+     * @return
+     */
     @RequestMapping(value = "/blog", method = RequestMethod.PUT)
     public Map<String, Object> EditBlog(int blog_id, String content, String blog_title) {
         Map<String, Object> map = new HashMap<>();
