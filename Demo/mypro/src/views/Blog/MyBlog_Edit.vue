@@ -55,9 +55,6 @@ export default {
       request({
         url: "/api/blog",
         method: "PUT",
-        headers: {
-          token: localStorage.getItem("token"), //传递token
-        },
         params: {
           blog_title: this.Blog.blog_title, //传递title
           content: this.Blog.content, //传递content
@@ -84,28 +81,30 @@ export default {
       this.Blog.content = "";
       this.Blog.blog_title = "";
     },
+    GetBlogById(blog_id) {
+      //通过Id获取博客
+      request({
+        url: "/api/blog",
+        method: "GET",
+        params: {
+          //参数是blog的id
+          blog_id: blog_id,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          this.Blog.blog_id = this.$route.query.blog_id;
+          this.Blog.content = res.data.content;
+          this.Blog.blog_title = res.data.blog_title;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   created() {
-    request({
-      url: "/api/blog",
-      method: "GET",
-      headers: {
-        token: localStorage.getItem("token"), //传递token
-      },
-      params: {
-        //参数是blog的id
-        blog_id: this.$route.query.blog_id,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        this.Blog.blog_id = this.$route.query.blog_id;
-        this.Blog.content = res.data.content;
-        this.Blog.blog_title = res.data.blog_title;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const blog_id = this.$route.query.blog_id;
+    this.GetBlogById(blog_id);  //查询要编辑的博客的信息
   },
 };
 </script>

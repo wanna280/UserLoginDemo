@@ -8,6 +8,7 @@ public class BlogBean {
     String content;  //文章的内容
     String blog_title; //标题
     Date publishTime;  //发表的时间
+    int is_delete;  //数据库中是否删除
 
     public String getBlog_title() {
         return blog_title;
@@ -47,5 +48,13 @@ public class BlogBean {
 
     public void setPublishTime(Date publishTime) {
         this.publishTime = publishTime;
+    }
+
+    public int getIs_delete() {
+        return is_delete;
+    }
+
+    public void setIs_delete(int is_delete) {
+        this.is_delete = is_delete;
     }
 }

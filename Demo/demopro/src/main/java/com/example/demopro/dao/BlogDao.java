@@ -18,4 +18,6 @@ public interface BlogDao {
     public ArrayList<BlogBean> GetAllBlogs();  //查询所有的博客
 
     public void UpdateBlog(BlogBean blogBean);  //更新一条博客记录
+
+    public Boolean DeleteBlogById(int id);  //传递一个id，删除一个博客
 }

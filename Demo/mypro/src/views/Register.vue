@@ -209,21 +209,7 @@ export default {
     },
   },
   created() {
-    request({
-      //请求后端验证码api，显示出图形验证码
-      url: "/api/captcha",
-    })
-      .then((res) => {
-        //console.log(res);
-        //设置图形验证码的src（base64编码）
-        this.captcha_src = res.data.captcha_base64;
-        //设置uuid，用于后端数据库的校验
-        this.RegForm.uuid = res.data.uuid;
-      })
-      .catch((err) => {
-        //请求失败打印错误信息
-        console.log(err);
-      });
+    this.Captcha(); //获取验证码
   },
 };
 </script>

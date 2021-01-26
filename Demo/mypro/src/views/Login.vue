@@ -124,22 +124,7 @@ export default {
   },
   created() {
     //生命周期函数，当组件创建
-    request({
-      //请求后端验证码api，得到主页的验证码
-      url: "/api/captcha",
-    })
-      .then((res) => {
-        //console.log(res);
-        //将页面中的验证码路径设为后端api返回的base64编码的验证码
-        this.captcha_src = res.data.captcha_base64;
-        //唯一的uuid，用来传递给后端查询redis做验证码校验
-        this.LoginForm.uuid = res.data.uuid;
-      })
-      .catch((err) => {
-        //请求失败打印失败信息
-        console.log(err);
-      });
-    console.log(this.$store.state.username);
+    this.Captcha(); //产生验证码
   },
 };
 </script>

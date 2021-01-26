@@ -45,4 +45,10 @@ public class BlogServiceImpl implements BlogService {
         }
 
     }
+
+    @Override
+    public boolean DeleteBlogById(int id) {
+        blogDao.DeleteBlogById(id);
+        return true;
+    }
 }

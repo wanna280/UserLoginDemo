@@ -53,10 +53,7 @@ export default {
 
       request({
         url: "/api/blog",
-        method: "post",
-        headers: {
-          token: localStorage.getItem("token"), //传递token
-        },
+        method: "POST",
         params: {
           blog_title: this.Blog.blog_title, //传递title
           content: this.Blog.content, //传递content

@@ -116,31 +116,32 @@ export default {
     ToMain() {
       this.$router.push("/main");
     },
+    GetSelfLogo() {
+      //获取自己的头像
+      request({
+        url: "/api/file/getlogo",
+        responseType: "arraybuffer",
+      })
+        .then((res) => {
+          //将后端的图片转换为base64去显示
+          this.logo_src =
+            "data:image/png;base64," +
+            btoa(
+              new Uint8Array(res.data).reduce(
+                (data, byte) => data + String.fromCharCode(byte),
+                ""
+              )
+            );
+          // console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   // 生命周期 - 创建完成
   created() {
-    request({
-      url: "/api/file/getlogo",
-      headers: {
-        token: localStorage.getItem("token"),
-      },
-      responseType: "arraybuffer",
-    })
-      .then((res) => {
-        //将后端的图片转换为base64去显示
-        this.logo_src =
-          "data:image/png;base64," +
-          btoa(
-            new Uint8Array(res.data).reduce(
-              (data, byte) => data + String.fromCharCode(byte),
-              ""
-            )
-          );
-        // console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.GetSelfLogo(); //获取自己的头像
   },
 
   // DOM挂载完毕

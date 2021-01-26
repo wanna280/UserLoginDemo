@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import request from '../network/request.js'
 export default {
   data() {
     return {
@@ -41,12 +41,9 @@ export default {
       //console.log(param.file);
       var file_form = new FormData(); //获取上传表单（文件）
       file_form.append("file", file);
-      axios({
+      request({
         url: "/api/file/upload/logo",
         method: "POST",
-        headers: {
-          token: localStorage.getItem("token"),
-        },
         data: file_form,
       })
         .then((res) => {

@@ -76,56 +76,53 @@ export default {
     ToMain() {
       this.$router.push("/main");
     },
+    GetSelfBlogs() {
+      request({
+        //访问后端的blog_all的api，展示页面中的博客信息
+        url: "/api/blog_all_self",
+        method: "get",
+      })
+        .then((res) => {
+          console.log(res);
+          this.BlogList = [];
+          var bloglist = res.data; //得到博客的列表
+          for (var i = 0; i < bloglist.length; i++) {
+            this.BlogList.push(bloglist[i]);
+            //将内容部分的markdown转换为html
+            this.BlogList[i].content = marked(this.BlogList[i].content);
+          }
+        })
+        .catch((err) => {
+          //请求失败打印失败信息
+          console.log(err);
+        });
+    },
+    GetSelfLogo() {
+      //获取自己的头像
+      request({
+        url: "/api/file/getlogo",
+        responseType: "arraybuffer",
+      })
+        .then((res) => {
+          //将后端的图片转换为base64去显示
+          this.logo_src =
+            "data:image/png;base64," +
+            btoa(
+              new Uint8Array(res.data).reduce(
+                (data, byte) => data + String.fromCharCode(byte),
+                ""
+              )
+            );
+          // console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   created() {
-    //获取localStorage中的token信息（用来后端校验认证/授权）
-    this.token = localStorage.getItem("token");
-    request({
-      //访问后端的blog_all的api，展示页面中的博客信息
-      url: "/api/blog_all_self",
-      method: "get",
-      headers: {
-        //在headers中传递token信息
-        token: this.token,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-        this.BlogList = [];
-        var bloglist = res.data; //得到博客的列表
-        for (var i = 0; i < bloglist.length; i++) {
-          this.BlogList.push(bloglist[i]);
-          //将内容部分的markdown转换为html
-          this.BlogList[i].content = marked(this.BlogList[i].content);
-        }
-      })
-      .catch((err) => {
-        //请求失败打印失败信息
-        console.log(err);
-      });
-
-    request({
-      url: "/api/file/getlogo",
-      headers: {
-        token: localStorage.getItem("token"),
-      },
-      responseType: "arraybuffer",
-    })
-      .then((res) => {
-        //将后端的图片转换为base64去显示
-        this.logo_src =
-          "data:image/png;base64," +
-          btoa(
-            new Uint8Array(res.data).reduce(
-              (data, byte) => data + String.fromCharCode(byte),
-              ""
-            )
-          );
-        // console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.GetSelfBlogs(); //获取自己的博客
+    this.GetSelfLogo(); //获取自己的头像
   },
 };
 </script>

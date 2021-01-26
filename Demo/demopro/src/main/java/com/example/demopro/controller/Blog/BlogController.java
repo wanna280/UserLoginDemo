@@ -6,6 +6,7 @@ import com.example.demopro.service.Impl.RedisServiceImpl;
 import com.example.demopro.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -140,6 +141,23 @@ public class BlogController {
             map.put("msg", "提交失败");
             map.put("status", false);
         }
+        return map;
+    }
+
+    @RequestMapping(value = "/blog/delete/{blog_id}", method = RequestMethod.DELETE)
+    public Map<String, Object> DeleteBlogById(@PathVariable int blog_id) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Map<String, Object> map = new HashMap<>();
+        map.put("code", 200);
+        map.put("msg", "删除成功");
+        blogService.DeleteBlogById(blog_id);
+        redisService.del("blog_all");
+        redisService.del("blog_username_" + username);
+        redisService.del("blog_id_" + blog_id);
+
+        blogService.GetAllBlogs();
+        blogService.GetBlogById(blog_id);
+        blogService.GetBlogsByUserName(username);
         return map;
     }
 

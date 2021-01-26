@@ -77,7 +77,7 @@ public class UploadController {
             } else {
 
             }
-            file.transferTo(file_server);
+            file.transferTo(file_server);  //将文件传输到服务器（本地）
             map.put("status", true);
             map.put("msg", "上传文件成功");
         } else {   //如果获取到的文件为空

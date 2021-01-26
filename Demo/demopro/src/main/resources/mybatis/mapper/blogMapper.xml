@@ -9,28 +9,31 @@
         <result column="content" property="content"/>
         <result column="publishTime" property="publishTime"/>
         <result column="blog_title" property="blog_title"/>
+        <result column="is_delete" property="is_delete"/>
     </resultMap>
 
     <select id="GetAllBlogs" resultMap="Blog">
         select *
         from wann.blog
-        where 1 = 1;
+        where is_delete = 0;
     </select>
     <select id="GetBlogById" resultMap="Blog">
         select *
         from wann.blog
-        where id = #{id};
+        where id = #{id}
+          and is_delete = 0;
     </select>
 
     <select id="GetBlogsByUserName" resultMap="Blog">
         select *
         from wann.blog
-        where username = #{username};
+        where username = #{username}
+          and is_delete = 0;
     </select>
 
     <insert id="AddBlog">
-        insert into wann.blog(username, content, publishTime, blog_title)
-        values (#{username}, #{content}, #{publishTime}, #{blog_title});
+        insert into wann.blog(username, content, publishTime, blog_title, is_delete)
+        values (#{username}, #{content}, #{publishTime}, #{blog_title}, 0);
     </insert>
 
     <update id="UpdateBlog">
@@ -38,6 +41,12 @@
         set blog_title=#{blog_title},
             content = #{content},
             publishTime=#{publishTime}
+        where id = #{id};
+    </update>
+
+    <update id="DeleteBlogById">
+        update wann.blog
+        set is_delete = 1
         where id = #{id};
     </update>
 
