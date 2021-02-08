@@ -7,5 +7,5 @@ public interface UserRolesService {
 
     public UserRolesBean GetUserRolesByUserName(String username);  //通过UserName查询用户角色
 
-    public boolean InsertOneUserRole(UserRolesBean userRolesBean);  //插入一个UserRolesBean
+    public Long InsertOneUserRole(UserRolesBean userRolesBean);  //插入一个UserRolesBean
 }

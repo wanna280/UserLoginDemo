@@ -9,5 +9,7 @@ public interface UserService {
 
     public UserBean GetUserByUserName(String username);  //根据UserName查询用户
 
-    public boolean InsertOneUser(UserBean userBean); //插入一个UserBean到User表
+    public Long InsertOneUser(UserBean userBean); //插入一个UserBean到User表
+
+    public Boolean ResetPassword(UserBean userBean);  //重设用户密码
 }

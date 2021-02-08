@@ -4,6 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ServletComponentScan("com.example.demopro.filter")
 @SpringBootApplication
@@ -11,7 +12,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 public class MainApplication {  //新版的IDEA复制路径复制的是/
 
     public static void main(String[] args) {
-
         SpringApplication.run(MainApplication.class, args);
     }
 

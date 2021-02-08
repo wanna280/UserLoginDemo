@@ -10,6 +10,6 @@ public interface UserDao {
     public UserBean GetUserById(int id);   //根据用户ID查询用户
     public UserBean UserLogin(UserBean userBean);  //根据用户名和用户名查询数据
     public UserBean GetUserByUserName(String username);  //根据用户名查询数据
-    public void InsertOneUser(UserBean userBean);    //插入一个用户
-
+    public Long InsertOneUser(UserBean userBean);    //插入一个用户
+    public Long ResetPassword(UserBean userBean);  //重设密码
 }

@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import request from "../../network/request";
 export default {
   name: "OtherSetting",
   props: {},
@@ -75,7 +76,21 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           //如果输入合法，提交，不然给出错误提醒
-          alert("submit!");
+
+          request({
+            url: "/api//user/reset_password/" + this.ruleForm.checkPass,
+          })
+            .then((res) => {
+              console.log(res);
+              if (res.data.status == true) {
+                alert("submit success!");
+              } else {
+                alert("submit failed!");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         } else {
           alert("提交失败"); //给出提交失败的信息
           return false;

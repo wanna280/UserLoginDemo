@@ -47,13 +47,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean InsertOneUser(UserBean userBean) {
-        try {   //插入成功return true
-            userDao.InsertOneUser(userBean);
+    public Long InsertOneUser(UserBean userBean) {
+        return userDao.InsertOneUser(userBean);
+    }
+
+    @Override
+    public Boolean ResetPassword(UserBean userBean) {
+
+        try {
+//            System.out.println(userBean.getPassword());
+//            System.out.println(userBean.getUsername());
+//            System.out.println(userDao.ResetPassword(userBean));
+            userDao.ResetPassword(userBean);
             return true;
         } catch (Exception ex) {
 
         }
         return false;
+
     }
 }

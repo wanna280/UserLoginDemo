@@ -16,9 +16,9 @@ public class UserRolesServiceImpl implements UserRolesService {
     @Override
     public UserRolesBean GetUserRolesById(int id) {
         UserRolesBean userRolesBean;
-        try{
+        try {
             userRolesBean = userRolesDao.GetUserRolesById(id);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             userRolesBean = null;
         }
         return userRolesBean;
@@ -27,22 +27,16 @@ public class UserRolesServiceImpl implements UserRolesService {
     @Override
     public UserRolesBean GetUserRolesByUserName(String username) {
         UserRolesBean userRolesBean;
-        try{
+        try {
             userRolesBean = userRolesDao.GetUserRolesByUserName(username);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             userRolesBean = null;
         }
         return userRolesBean;
     }
 
     @Override
-    public boolean InsertOneUserRole(UserRolesBean userRolesBean) {
-        try {   //插入成功return true
-            userRolesDao.InsertOneUserRole(userRolesBean);
-            return true;
-        } catch (Exception ex) {
-
-        }
-        return false;
+    public Long InsertOneUserRole(UserRolesBean userRolesBean) {
+        return userRolesDao.InsertOneUserRole(userRolesBean);
     }
 }

@@ -32,4 +32,12 @@
         insert into wann.user(username, password)
         values (#{username}, #{password})
     </insert>
+
+    <update id="ResetPassword">
+        update wann.user
+        set password = #{password}
+        <where>
+            username = #{username};
+        </where>
+    </update>
 </mapper>

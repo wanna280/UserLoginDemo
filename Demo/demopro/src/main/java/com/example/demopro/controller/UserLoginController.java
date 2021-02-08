@@ -10,6 +10,7 @@ import com.example.demopro.utils.JwtUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -82,9 +83,10 @@ public class UserLoginController {
         UserRolesBean userRolesBean = new UserRolesBean(0, username, roles);  //创建角色的实体，后端数据库自增id，所以id不用管
         UserBean user_db = userService.GetUserByUserName(username);  //从后端数据库查询这个用户名的数据
         if (user_db == null) {  //如果不是空，数据库已经存在这个用户了
-            boolean status1 = userService.InsertOneUser(userBean);  //插入用户表
-            boolean status2 = userRolesService.InsertOneUserRole(userRolesBean); //插入角色表
-            if (status1 == true && status2 == true) {  //如果两条语句都执行成功
+
+            Long status1 = userService.InsertOneUser(userBean);  //插入用户表
+            Long status2 = userRolesService.InsertOneUserRole(userRolesBean); //插入角色表
+            if (status1 > 0 && status2 > 0) {  //如果两条语句都执行成功
                 map.put("status", true);
                 map.put("msg", "注册成功");
                 map.put("username", username);
@@ -153,6 +155,21 @@ public class UserLoginController {
         Map<String, Object> map = new HashMap<>();
         map.put("username", username);
         map.put("msg", true);
+        return map;
+    }
+
+    @ResponseBody
+    @RequestMapping("/user/reset_password/{password}")
+    public Map<String, Object> ResetPassword(@PathVariable("password") String password) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String passwd = new BCryptPasswordEncoder().encode(password);
+        UserBean userBean = new UserBean(0, username, passwd);
+        Map<String, Object> map = new HashMap<>();
+        userService.ResetPassword(userBean);
+        map.put("status", true);
+        map.put("username", username);
+        map.put("password", passwd);
+        redisService.del("user_username_" + username);
         return map;
     }
 

@@ -15,7 +15,7 @@
           <el-menu-item index="2-2" @click="GetSelfBlog()"
             >我的文章</el-menu-item
           >
-          <el-menu-item index="2-3">退出登录</el-menu-item>
+          <el-menu-item index="2-3" @click="Exit()">退出登录</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
@@ -58,6 +58,10 @@ export default {
     };
   },
   methods: {
+    Exit() {
+      localStorage.removeItem("token"); //删掉token
+      this.$router.replace("/login");
+    },
     ToSetting() {
       this.$router.push("/setting");
     },
