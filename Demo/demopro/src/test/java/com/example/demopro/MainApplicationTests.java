@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 
 @SpringBootTest
-class DemoproApplicationTests {
+class MainApplicationTests {
     @Autowired
     JedisPoolUtils jedisPoolUtils;
 

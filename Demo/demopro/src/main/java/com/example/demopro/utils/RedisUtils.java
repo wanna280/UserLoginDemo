@@ -1,8 +1,6 @@
 package com.example.demopro.utils;
 
-import com.example.demopro.DemoproApplication;
-import org.omg.CORBA.portable.InputStream;
-import org.springframework.context.annotation.Bean;
+import com.example.demopro.MainApplication;
 import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
 
@@ -16,7 +14,7 @@ public class RedisUtils {
 
     public Map YamlReadJedisConfigFromResource(String path) {
         Yaml yaml = new Yaml();
-        Map map = (Map) yaml.load(DemoproApplication.class.getResourceAsStream(path));
+        Map map = (Map) yaml.load(MainApplication.class.getResourceAsStream(path));
         Map map2 = (Map) ((Map) map.get("jedis")).get("pool");  //得到配置文件
         return map2;
     }

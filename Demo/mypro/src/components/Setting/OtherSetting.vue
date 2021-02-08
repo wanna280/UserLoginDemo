@@ -1,22 +1,37 @@
 <template>
   <div id="otherSetting_main">
-    <div class="other_items">
-      <div><div>账号名称</div></div>
-      <div style="width:250px">Wanna</div>
-    </div>
-    <div class="other_items">
-      <div><div>密码设置</div></div>
-      <div>
+    <el-form
+      :model="ruleForm"
+      status-icon
+      :rules="rules"
+      ref="ruleForm"
+      label-width="100px"
+      class="demo-ruleForm"
+    >
+      <el-form-item label="账号名称">
+        <el-input placeholder="Wanna" :disabled="true"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="pass">
         <el-input
-          style="width: 250px"
-          placeholder="请输入密码"
-          v-model="password"
+          type="password"
+          v-model="ruleForm.pass"
+          autocomplete="off"
         ></el-input>
-      </div>
-    </div>
-    <div class="other_items">
-      <el-button type="primary">提交表单</el-button>
-    </div>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="checkPass">
+        <el-input
+          type="password"
+          v-model="ruleForm.checkPass"
+          autocomplete="off"
+        ></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm('ruleForm')"
+          >提交</el-button
+        >
+        <el-button @click="resetForm('ruleForm')">重置</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -25,11 +40,52 @@ export default {
   name: "OtherSetting",
   props: {},
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.ruleForm.checkPass !== "") {
+          this.$refs.ruleForm.validateField("checkPass");
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
     return {
-      password: "",
+      ruleForm: {
+        pass: "", //password
+        checkPass: "", //repeat password
+      },
+      rules: {
+        pass: [{ validator: validatePass, trigger: "blur" }],
+        checkPass: [{ validator: validatePass2, trigger: "blur" }],
+      },
     };
   },
-  methods: {},
+  methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          //如果输入合法，提交，不然给出错误提醒
+          alert("submit!");
+        } else {
+          alert("提交失败"); //给出提交失败的信息
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+  },
   // 生命周期 - 创建完成
   created() {},
 
